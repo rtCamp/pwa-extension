@@ -1,6 +1,6 @@
 # rt-pwa-extension
 
-Extends the functionality of PWA - WordPRrss plugin
+Extends the functionality of PWA - WordPress plugin
 
 ## Requirements
 - WordPress PWA Plugin
