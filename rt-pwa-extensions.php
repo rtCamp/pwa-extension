@@ -81,33 +81,48 @@ foreach ( $icon_sizes as $size ) {
 }
 
 // Add Customizer settings to select PWA Icon.
-add_action( 'customize_register', function( $wp_customize ) {
-	$wp_customize->add_setting( 'rpe_pwa_icon' , array(
-			'transport' => 'postMessage',
-	) );
+add_action(
+	'customize_register',
+	function( $wp_customize ) {
+		$wp_customize->add_setting(
+			'rpe_pwa_icon',
+			array(
+				'transport' => 'postMessage',
+			)
+		);
 
-	$wp_customize->add_control( new WP_Customize_Cropped_Image_Control( $wp_customize, 'cropped_image', array(
-			'section'     => 'title_tagline',
-			'label'       => __( 'PWA Icon' ),
-			'flex_width'  => true, // Allow any width, making the specified value recommended.
-			'flex_height' => true, // Require the resulting image to be exactly as tall as the height attribute.
-			'width'       => 512,
-			'height'      => 512,
-			'priority'    => 16,
-			'settings'    => 'rpe_pwa_icon',
-	) ) );
-} );
+		$wp_customize->add_control(
+			new WP_Customize_Cropped_Image_Control(
+				$wp_customize,
+				'cropped_image',
+				array(
+					'section'     => 'title_tagline',
+					'label'       => __( 'PWA Icon' ),
+					'flex_width'  => true, // Allow any width, making the specified value recommended.
+					'flex_height' => true, // Require the resulting image to be exactly as tall as the height attribute.
+					'width'       => 512,
+					'height'      => 512,
+					'priority'    => 16,
+					'settings'    => 'rpe_pwa_icon',
+				)
+			)
+		);
+	}
+);
 
 // Regenerate all thumbnail of the current site id image with new sizes.
-register_activation_hook( __FILE__, function() {
+register_activation_hook(
+	__FILE__,
+	function() {
 
-	$site_icon_id = get_option( 'site_icon' );
+		$site_icon_id = get_option( 'site_icon' );
 
-	if ( ! empty( $site_icon_id ) ) {
-		require_once( ABSPATH . 'wp-admin/includes/image.php' );
-		require_once( ABSPATH . 'wp-includes/pluggable.php' );
-		$metadata = wp_generate_attachment_metadata( $site_icon_id, get_attached_file( $site_icon_id ) );
-		wp_update_attachment_metadata( $site_icon_id, $metadata );
+		if ( ! empty( $site_icon_id ) ) {
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+			require_once ABSPATH . 'wp-includes/pluggable.php';
+			$metadata = wp_generate_attachment_metadata( $site_icon_id, get_attached_file( $site_icon_id ) );
+			wp_update_attachment_metadata( $site_icon_id, $metadata );
+		}
+
 	}
-
-} );
+);

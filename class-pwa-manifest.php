@@ -35,14 +35,14 @@ class PWA_Manifest {
 		$icon_id = get_theme_mod( 'rpe_pwa_icon' );
 		// Get the site icon id if PWA icon is not set.
 		$icon_id = ! empty( $icon_id ) ? $icon_id : get_option( 'site_icon' );
-		$icons = array();
+		$icons   = array();
 		if ( ! empty( $icon_id ) ) {
 			$icon_sizes = [ '72', '96', '128', '144', '152', '192', '384', '512' ];
 
 			// Add icons with different sizes.
 			foreach ( $icon_sizes as $icon_size ) {
 				$image_size_label = sprintf( 'pwa-icon-%1$d', $icon_size );
-				$icon = wp_get_attachment_image_src( absint( $icon_id ), $image_size_label );
+				$icon             = wp_get_attachment_image_src( absint( $icon_id ), $image_size_label );
 				if ( ! empty( $icon ) ) {
 					$icons[] = [
 						'src'   => $icon[0],
