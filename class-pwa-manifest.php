@@ -27,13 +27,32 @@ class PWA_Manifest {
 		if ( empty( $manifest ) || ! is_array( $manifest ) ) {
 			return $manifest;
 		}
-		$icon_sizes = [ '72', '96', '128', '144', '152', '192', '384', '512' ];
-		foreach ( $icon_sizes as $icon_size ) {
-			$manifest['icons'][] = [
-				'src'   => sprintf( '%1$s/assets/img/icon-%2$sx%2$s.png', get_template_directory_uri(), $icon_size ),
-				'sizes' => sprintf( '%1$sx%1$s', $icon_size ),
-			];
+
+		// Add short name which is required by the PWA standards.
+		$manifest['short_name'] = get_bloginfo( 'name' );
+
+		// Get the PWA icon id first.
+		$icon_id = get_theme_mod( 'rpe_pwa_icon' );
+		// Get the site icon id if PWA icon is not set.
+		$icon_id = ! empty( $icon_id ) ? $icon_id : get_option( 'site_icon' );
+		$icons = array();
+		if ( ! empty( $icon_id ) ) {
+			$icon_sizes = [ '72', '96', '128', '144', '152', '192', '384', '512' ];
+
+			// Add icons with different sizes.
+			foreach ( $icon_sizes as $icon_size ) {
+				$image_size_label = sprintf( 'pwa-icon-%1$d', $icon_size );
+				$icon = wp_get_attachment_image_src( absint( $icon_id ), $image_size_label );
+				if ( ! empty( $icon ) ) {
+					$icons[] = [
+						'src'   => $icon[0],
+						'sizes' => sprintf( '%1$sx%1$s', $icon_size ),
+						'type'  => get_post_mime_type( $icon_id ),
+					];
+				}
+			}
 		}
+		$manifest['icons']   = $icons;
 		$manifest['display'] = 'standalone';
 		return $manifest;
 	}
