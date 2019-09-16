@@ -110,7 +110,7 @@ add_action(
 	}
 );
 
-// Regenerate all thumbnail of the current site id image with new sizes.
+// Regenerate all thumbnail for the current site icon image with new sizes.
 register_activation_hook(
 	__FILE__,
 	function() {

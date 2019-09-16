@@ -29,7 +29,7 @@ class PWA_Manifest {
 		}
 
 		// Add short name which is required by the PWA standards.
-		$manifest['short_name'] = get_bloginfo( 'name' );
+		$manifest['short_name'] = substr( get_bloginfo( 'name' ), 0, 12 );
 
 		// Get the PWA icon id first.
 		$icon_id = get_theme_mod( 'rpe_pwa_icon' );
