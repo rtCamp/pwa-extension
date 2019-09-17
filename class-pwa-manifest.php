@@ -35,7 +35,7 @@ class PWA_Manifest {
 		$icon_id = get_theme_mod( 'rpe_pwa_icon' );
 		// Get the site icon id if PWA icon is not set.
 		$icon_id = ! empty( $icon_id ) ? $icon_id : get_option( 'site_icon' );
-		$icons   = array();
+		$icons   = [];
 		if ( ! empty( $icon_id ) ) {
 			$icon_sizes = [ '72', '96', '128', '144', '152', '192', '384', '512' ];
 

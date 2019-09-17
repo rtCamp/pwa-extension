@@ -42,16 +42,16 @@ add_action(
 	function( \WP_Service_Worker_Scripts $scripts ) {
 		$scripts->caching_routes()->register(
 			'/wp-content/.*\.(?:png|gif|jpg|jpeg|svg|webp)(\?.*)?$',
-			array(
+			[
 				'strategy'  => WP_Service_Worker_Caching_Routes::STRATEGY_CACHE_FIRST,
 				'cacheName' => 'images',
-				'plugins'   => array(
-					'expiration' => array(
+				'plugins'   => [
+					'expiration' => [
 						'maxEntries'    => 50,
 						'maxAgeSeconds' => 60 * 60 * 24,
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 	}
 );
@@ -86,16 +86,16 @@ add_action(
 	function( $wp_customize ) {
 		$wp_customize->add_setting(
 			'rpe_pwa_icon',
-			array(
+			[
 				'transport' => 'postMessage',
-			)
+			]
 		);
 
 		$wp_customize->add_control(
 			new WP_Customize_Cropped_Image_Control(
 				$wp_customize,
 				'cropped_image',
-				array(
+				[
 					'section'     => 'title_tagline',
 					'label'       => __( 'PWA Icon' ),
 					'flex_width'  => true, // Allow any width, making the specified value recommended.
@@ -104,7 +104,7 @@ add_action(
 					'height'      => 512,
 					'priority'    => 16,
 					'settings'    => 'rpe_pwa_icon',
-				)
+				]
 			)
 		);
 	}
