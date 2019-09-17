@@ -44,8 +44,16 @@ class PWA_Manifest {
 				$image_size_label = sprintf( 'pwa-icon-%1$d', $icon_size );
 				$icon             = wp_get_attachment_image_src( absint( $icon_id ), $image_size_label );
 				if ( ! empty( $icon ) ) {
-					$icons[] = [
-						'src'   => $icon[0],
+					$icon_hook_name = sprintf( 'rtpwa_icon_%d_url', $icon_size );
+
+					/**
+					 * Filters the PWA Icon URL by size.
+					 *
+					 * @param int $icon_url URL of icon.
+					 */
+					$icon_url = apply_filters( $icon_hook_name, $icon[0] );
+					$icons[]  = [
+						'src'   => $icon_url,
 						'sizes' => sprintf( '%1$sx%1$s', $icon_size ),
 						'type'  => get_post_mime_type( $icon_id ),
 					];
