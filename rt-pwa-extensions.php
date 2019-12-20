@@ -69,3 +69,7 @@ add_filter(
 		return $headers;
 	}
 );
+
+if ( in_array( 'izooto-web-push/izooto.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
+	require __DIR__ . '/class-izooto-integration.php';
+}
