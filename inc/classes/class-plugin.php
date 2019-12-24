@@ -73,7 +73,7 @@ class Plugin {
 	public function filter_wp_headers( $headers ) {
 
 		if ( ! is_array( $headers ) ) {
-			return;
+			return $headers;
 		}
 
 		$headers['Strict-Transport-Security'] = 'max-age=3600';
