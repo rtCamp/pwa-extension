@@ -28,11 +28,11 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 ## Change Log
 
 ### v1.0.1 (24-12-2019)
-* izooto push notifications plugin integration.
+- izooto push notifications plugin integration.
 
 ### v1.0.0 (12-09-2019)
-* `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme//assets/img/icon-{width x height}.png'`.
-* Offline reading by caching assets and pages.
+- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme//assets/img/icon-{width x height}.png'`.
+- Offline reading by caching assets and pages.
 
 
 
