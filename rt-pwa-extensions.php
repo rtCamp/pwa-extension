@@ -4,7 +4,7 @@
  * Description: Enabling PWA features like offline caching etc. (requires pwa plugin activated.)
  * Author: rtCamp, chandrapatel, pradeep910
  * Author URI: https://rtcamp.com/?utm_source=rt-pwa-extensions-plugin
- * Version: 1.0
+ * Version: 1.0.1
  *
  * @package rt-pwa-extensions
  */
@@ -69,3 +69,9 @@ add_filter(
 		return $headers;
 	}
 );
+
+require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+if ( is_plugin_active( 'izooto-web-push/izooto.php' ) ) {
+	require __DIR__ . '/class-izooto-integration.php';
+}
