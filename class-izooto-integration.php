@@ -6,7 +6,7 @@ class Izooto_Integration {
 
 	public function __construct() {
 
-		add_action( 'wp_front_service_worker', [ $this, 'register_izooto_service_worker_script' ] );
+		add_action( 'wp_front_service_worker', array( $this, 'register_izooto_service_worker_script' ) );
 
 		// Remove izooto service worker so it does not conflict with PWA plugin service worker.
 		add_action(
@@ -31,7 +31,7 @@ class Izooto_Integration {
 			'izooto-workers', // Handle.
 			array(
 				'src' => function() {
-					require_once ABSPATH . 'wp-content/plugins/izooto-web-push/includes/class-init.php';
+					require_once WP_PLUGIN_DIR . '/izooto-web-push/includes/class-init.php';
 					$obj = new Init();
 					$opfunction = $obj->iz_get_option( 'izooto-settings' );
 					return sprintf( 'var izCacheVer = 1; importScripts("%1$s");', esc_url_raw( 'https://' . $opfunction['sw'] ) );

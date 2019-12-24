@@ -70,6 +70,8 @@ add_filter(
 	}
 );
 
-if ( in_array( 'izooto-web-push/izooto.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
+require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+if ( is_plugin_active( 'izooto-web-push/izooto.php' ) ) {
 	require __DIR__ . '/class-izooto-integration.php';
 }
