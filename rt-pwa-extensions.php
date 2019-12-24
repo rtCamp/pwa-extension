@@ -69,3 +69,23 @@ add_filter(
 		return $headers;
 	}
 );
+
+/**
+ * Disables WorkBox dev logs.
+ *
+ * @param object $scripts
+ *
+ * @return void
+ */
+function disable_workbox_logs( $scripts ) {
+	$scripts->register(
+		'disable_workbox_logs',
+		array(
+			'src' => function() {
+				return 'self.__WB_DISABLE_DEV_LOGS = true;';
+			},
+		)
+	);
+}
+
+add_action( 'wp_front_service_worker', 'disable_workbox_logs' );
