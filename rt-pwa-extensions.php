@@ -4,74 +4,24 @@
  * Description: Enabling PWA features like offline caching etc. (requires pwa plugin activated.)
  * Author: rtCamp, chandrapatel, pradeep910
  * Author URI: https://rtcamp.com/?utm_source=rt-pwa-extensions-plugin
- * Version: 1.0.1
+ * Version: 1.0.2
  *
  * @package rt-pwa-extensions
  */
 
-// Include PWA Manifest changes.
-require __DIR__ . '/class-pwa-manifest.php';
+define( 'RT_PWA_EXTENSIONS_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
+define( 'RT_PWA_EXTENSIONS_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
-// Enable service worker integrations.
-add_filter( 'wp_service_worker_integrations_enabled', '__return_true' );
-
-// This is to opt-in to a caching strategy for navigation requests.
-add_filter( 'wp_service_worker_navigation_preload', '__return_false' );
-
-// Change service worker navigation caching strategy to fastest first.
-add_filter(
-	'wp_service_worker_navigation_caching_strategy',
-	function() {
-		return WP_Service_Worker_Caching_Routes::STRATEGY_STALE_WHILE_REVALIDATE;
-	}
-);
-
-// Cache pages.
-add_filter(
-	'wp_service_worker_navigation_caching_strategy_args',
-	function( $args ) {
-		$args['cacheName']                           = 'pages';
-		$args['plugins']['expiration']['maxEntries'] = 50;
-		return $args;
-	}
-);
-
-// Cache images.
-add_action(
-	'wp_front_service_worker',
-	function( \WP_Service_Worker_Scripts $scripts ) {
-		$scripts->caching_routes()->register(
-			'/wp-content/.*\.(?:png|gif|jpg|jpeg|svg|webp)(\?.*)?$',
-			array(
-				'strategy'  => WP_Service_Worker_Caching_Routes::STRATEGY_CACHE_FIRST,
-				'cacheName' => 'images',
-				'plugins'   => array(
-					'expiration' => array(
-						'maxEntries'    => 50,
-						'maxAgeSeconds' => 60 * 60 * 24,
-					),
-				),
-			)
-		);
-	}
-);
+// phpcs:disable WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
+require_once RT_PWA_EXTENSIONS_PATH . '/inc/helpers/autoloader.php';
+// phpcs:enable WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 /**
- * Adds an HSTS header to the response.
+ * To load plugin manifest class.
  *
- * @param array $headers The headers to filter.
- * @return array $headers The filtered headers.
+ * @return void
  */
-add_filter(
-	'wp_headers',
-	function( $headers ) {
-		$headers['Strict-Transport-Security'] = 'max-age=3600'; // Or another max-age.
-		return $headers;
-	}
-);
-
-require_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-if ( is_plugin_active( 'izooto-web-push/izooto.php' ) ) {
-	require __DIR__ . '/class-izooto-integration.php';
+function rt_pwa_extensions_plugin_loader() {
+	\RT\PWA\Inc\Plugin::get_instance();
 }
+rt_pwa_extensions_plugin_loader();
