@@ -176,6 +176,9 @@ class Service_Worker {
 		// Filter out duplicate links.
 		$menu_links = array_unique( $menu_links );
 
+		// pre-cache only 10 menu links.
+		$menu_links = array_slice( $menu_links, 0, 10 );
+
 		foreach ( $menu_links as $menu_link ) {
 
 			$scripts->precaching_routes()->register(
