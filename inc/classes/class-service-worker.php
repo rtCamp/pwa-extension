@@ -33,6 +33,8 @@ class Service_Worker {
 
 		add_action( 'wp_front_service_worker', array( $this, 'cache_images' ) );
 
+		add_action( 'wp_front_service_worker', array( $this, 'enable_offline_google_analytics' ) );
+
 	}
 
 	/**
@@ -90,6 +92,26 @@ class Service_Worker {
 						'maxAgeSeconds' => 60 * 60 * 24,
 					),
 				),
+			)
+		);
+
+	}
+
+	/**
+	 * Enables offline google analytics.
+	 *
+	 * @param object $scripts
+	 *
+	 * @return void
+	 */
+	public function enable_offline_google_analytics( $scripts ) {
+
+		$scripts->register(
+			'offline-google-analytics',
+			array(
+				'src' => function() {
+					return 'workbox.googleAnalytics.initialize();';
+				},
 			)
 		);
 
