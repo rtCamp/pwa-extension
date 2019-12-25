@@ -32,7 +32,8 @@ class Service_Worker {
 		add_filter( 'wp_service_worker_navigation_caching_strategy_args', array( $this, 'filter_wp_service_worker_navigation_caching_strategy_args' ) );
 
 		add_action( 'wp_front_service_worker', array( $this, 'cache_images' ) );
-
+		add_action( 'wp_front_service_worker', array( $this, 'precache_latest_blog_posts' ) );
+		add_action( 'wp_front_service_worker', array( $this, 'precache_menu' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'enable_offline_google_analytics' ) );
 
 	}
@@ -94,6 +95,97 @@ class Service_Worker {
 				),
 			)
 		);
+
+	}
+
+	/**
+	 * Pre-Cache latest blog posts
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
+	public function precache_latest_blog_posts( \WP_Service_Worker_Scripts $scripts ) {
+
+		$recent_posts = new \WP_Query(
+			array(
+				'post_type'              => 'post',
+				'post_status'            => 'publish',
+				'fields'                 => 'ids',
+				'posts_per_page'         => 10,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		if ( empty( $recent_posts->posts ) || ! is_array( $recent_posts->posts ) ) {
+			return;
+		}
+
+		foreach ( $recent_posts->posts as $recent_post_id ) {
+			$scripts->precaching_routes()->register(
+				get_permalink( $recent_post_id ),
+				array(
+					'revision' => get_bloginfo( 'version' ),
+				)
+			);
+		}
+
+	}
+
+	/**
+	 * Pre-Cache menu
+	 *
+	 * Only precache menu which assigned to any menu locations.
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
+	public function precache_menu( \WP_Service_Worker_Scripts $scripts ) {
+
+		// Get menu locations from source site.
+		$menu_locations = get_nav_menu_locations();
+
+		if ( empty( $menu_locations ) || ! is_array( $menu_locations ) ) {
+			return;
+		}
+
+		$menu_links = array();
+
+		foreach ( $menu_locations as $menu_location => $menu_id ) {
+
+			// If menu location does not have any menu assign then continue.
+			if ( empty( $menu_id ) ) {
+				continue;
+			}
+
+			$menu_items = wp_get_nav_menu_items( $menu_id );
+
+			foreach ( $menu_items as $menu_item ) {
+				$menu_links[] = $menu_item->url;
+			}
+		}
+
+		if ( empty( $menu_links ) || ! is_array( $menu_links ) ) {
+			return;
+		}
+
+		// Filter out duplicate links.
+		$menu_links = array_unique( $menu_links );
+
+		// pre-cache only 10 menu links.
+		$menu_links = array_slice( $menu_links, 0, 10 );
+
+		foreach ( $menu_links as $menu_link ) {
+			$scripts->precaching_routes()->register(
+				$menu_link,
+				array(
+					'revision' => get_bloginfo( 'version' ),
+				)
+			);
+		}
 
 	}
 
