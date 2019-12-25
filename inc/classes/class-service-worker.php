@@ -32,6 +32,7 @@ class Service_Worker {
 		add_filter( 'wp_service_worker_navigation_caching_strategy_args', array( $this, 'filter_wp_service_worker_navigation_caching_strategy_args' ) );
 
 		add_action( 'wp_front_service_worker', array( $this, 'cache_images' ) );
+		add_action( 'wp_front_service_worker', array( $this, 'precache_latest_blog_posts' ) );
 
 	}
 
@@ -92,6 +93,44 @@ class Service_Worker {
 				),
 			)
 		);
+
+	}
+
+	/**
+	 * Pre-Cache latest blog posts
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
+	public function precache_latest_blog_posts( \WP_Service_Worker_Scripts $scripts ) {
+
+		$recent_posts = new \WP_Query(
+			array(
+				'post_type'              => 'post',
+				'post_status'            => 'publish',
+				'fields'                 => 'ids',
+				'posts_per_page'         => 10,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		if ( empty( $recent_posts->posts ) || ! is_array( $recent_posts->posts ) ) {
+			return;
+		}
+
+		foreach ( $recent_posts->posts as $recent_post_id ) {
+
+			$scripts->precaching_routes()->register(
+				get_permalink( $recent_post_id ),
+				array(
+					'revision' => get_bloginfo( 'version' ),
+				)
+			);
+
+		}
 
 	}
 
