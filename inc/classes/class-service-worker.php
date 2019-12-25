@@ -33,6 +33,7 @@ class Service_Worker {
 
 		add_action( 'wp_front_service_worker', array( $this, 'cache_images' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'precache_latest_blog_posts' ) );
+		add_action( 'wp_front_service_worker', array( $this, 'precache_menu' ) );
 
 	}
 
@@ -125,6 +126,60 @@ class Service_Worker {
 
 			$scripts->precaching_routes()->register(
 				get_permalink( $recent_post_id ),
+				array(
+					'revision' => get_bloginfo( 'version' ),
+				)
+			);
+
+		}
+
+	}
+
+	/**
+	 * Pre-Cache menu
+	 *
+	 * Only precache menu which assigned to any menu locations.
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
+	public function precache_menu( \WP_Service_Worker_Scripts $scripts ) {
+
+		// Get menu locations from source site.
+		$menu_locations = get_nav_menu_locations();
+
+		if ( empty( $menu_locations ) || ! is_array( $menu_locations ) ) {
+			return;
+		}
+
+		$menu_links = array();
+
+		foreach ( $menu_locations as $menu_location => $menu_id ) {
+
+			// If menu location does not have any menu assign then continue.
+			if ( empty( $menu_id ) ) {
+				continue;
+			}
+
+			$menu_items = wp_get_nav_menu_items( $menu_id );
+
+			foreach ( $menu_items as $menu_item ) {
+				$menu_links[] = $menu_item->url;
+			}
+		}
+
+		if ( empty( $menu_links ) || ! is_array( $menu_links ) ) {
+			return;
+		}
+
+		// Filter out duplicate links.
+		$menu_links = array_unique( $menu_links );
+
+		foreach ( $menu_links as $menu_link ) {
+
+			$scripts->precaching_routes()->register(
+				$menu_link,
 				array(
 					'revision' => get_bloginfo( 'version' ),
 				)
