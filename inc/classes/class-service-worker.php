@@ -100,11 +100,11 @@ class Service_Worker {
 	/**
 	 * Enables offline google analytics.
 	 *
-	 * @param object $scripts
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
 	 *
 	 * @return void
 	 */
-	public function enable_offline_google_analytics( $scripts ) {
+	public function enable_offline_google_analytics( \WP_Service_Worker_Scripts $scripts ) {
 
 		$scripts->register(
 			'offline-google-analytics',
