@@ -34,6 +34,7 @@ class Service_Worker {
 		add_action( 'wp_front_service_worker', array( $this, 'cache_images' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'precache_latest_blog_posts' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'precache_menu' ) );
+		add_action( 'wp_front_service_worker', array( $this, 'enable_offline_google_analytics' ) );
 
 	}
 
@@ -123,14 +124,12 @@ class Service_Worker {
 		}
 
 		foreach ( $recent_posts->posts as $recent_post_id ) {
-
 			$scripts->precaching_routes()->register(
 				get_permalink( $recent_post_id ),
 				array(
 					'revision' => get_bloginfo( 'version' ),
 				)
 			);
-
 		}
 
 	}
@@ -180,15 +179,33 @@ class Service_Worker {
 		$menu_links = array_slice( $menu_links, 0, 10 );
 
 		foreach ( $menu_links as $menu_link ) {
-
 			$scripts->precaching_routes()->register(
 				$menu_link,
 				array(
 					'revision' => get_bloginfo( 'version' ),
 				)
 			);
-
 		}
+
+	}
+
+	/**
+	 * Enables offline google analytics.
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
+	public function enable_offline_google_analytics( \WP_Service_Worker_Scripts $scripts ) {
+
+		$scripts->register(
+			'offline-google-analytics',
+			array(
+				'src' => function() {
+					return 'workbox.googleAnalytics.initialize();';
+				},
+			)
+		);
 
 	}
 
