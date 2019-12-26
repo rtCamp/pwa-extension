@@ -164,7 +164,11 @@ class Service_Worker {
 			$menu_items = wp_get_nav_menu_items( $menu_id );
 
 			foreach ( $menu_items as $menu_item ) {
-				$menu_links[] = $menu_item->url;
+
+				// Don't precache external links.
+				if ( false !== strpos( $menu_item->url, home_url() ) ) {
+					$menu_links[] = $menu_item->url;
+				}
 			}
 		}
 
