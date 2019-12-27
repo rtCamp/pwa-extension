@@ -107,23 +107,35 @@ class Service_Worker {
 	 */
 	public function precache_latest_blog_posts( \WP_Service_Worker_Scripts $scripts ) {
 
-		$recent_posts = new \WP_Query(
-			array(
-				'post_type'              => 'post',
-				'post_status'            => 'publish',
-				'fields'                 => 'ids',
-				'posts_per_page'         => 10,
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-			)
-		);
+		$cache_key = 'rt_pwa_extensions_precacge_latest_posts';
 
-		if ( empty( $recent_posts->posts ) || ! is_array( $recent_posts->posts ) ) {
-			return;
+		$recent_posts = wp_cache_get( $cache_key );
+
+		if ( empty( $recent_posts ) ) {
+
+			$recent_posts = new \WP_Query(
+				array(
+					'post_type'              => 'post',
+					'post_status'            => 'publish',
+					'fields'                 => 'ids',
+					'posts_per_page'         => 10,
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+				)
+			);
+
+			if ( empty( $recent_posts->posts ) || ! is_array( $recent_posts->posts ) ) {
+				return;
+			}
+
+			$recent_posts = $recent_posts->posts;
+
+			wp_cache_set( $cache_key, $recent_posts, '', 10 * MINUTE_IN_SECONDS );
+
 		}
 
-		foreach ( $recent_posts->posts as $recent_post_id ) {
+		foreach ( $recent_posts as $recent_post_id ) {
 			$scripts->precaching_routes()->register(
 				get_permalink( $recent_post_id ),
 				array(
@@ -145,42 +157,52 @@ class Service_Worker {
 	 */
 	public function precache_menu( \WP_Service_Worker_Scripts $scripts ) {
 
-		// Get menu locations from source site.
-		$menu_locations = get_nav_menu_locations();
+		$cache_key = 'rt_pwa_extensions_precache_menu_links';
 
-		if ( empty( $menu_locations ) || ! is_array( $menu_locations ) ) {
-			return;
-		}
+		$menu_links = wp_cache_get( $cache_key );
 
-		$menu_links = array();
+		if ( empty( $menu_links ) ) {
 
-		foreach ( $menu_locations as $menu_location => $menu_id ) {
+			// Get menu locations from source site.
+			$menu_locations = get_nav_menu_locations();
 
-			// If menu location does not have any menu assign then continue.
-			if ( empty( $menu_id ) ) {
-				continue;
+			if ( empty( $menu_locations ) || ! is_array( $menu_locations ) ) {
+				return;
 			}
 
-			$menu_items = wp_get_nav_menu_items( $menu_id );
+			$menu_links = array();
 
-			foreach ( $menu_items as $menu_item ) {
+			foreach ( $menu_locations as $menu_location => $menu_id ) {
 
-				// Don't precache external links.
-				if ( false !== strpos( $menu_item->url, home_url() ) ) {
-					$menu_links[] = $menu_item->url;
+				// If menu location does not have any menu assign then continue.
+				if ( empty( $menu_id ) ) {
+					continue;
+				}
+
+				$menu_items = wp_get_nav_menu_items( $menu_id );
+
+				foreach ( $menu_items as $menu_item ) {
+
+					// Don't precache external links.
+					if ( false !== strpos( $menu_item->url, home_url() ) ) {
+						$menu_links[] = $menu_item->url;
+					}
 				}
 			}
+
+			if ( empty( $menu_links ) || ! is_array( $menu_links ) ) {
+				return;
+			}
+
+			// Filter out duplicate links.
+			$menu_links = array_unique( $menu_links );
+
+			// pre-cache only 10 menu links.
+			$menu_links = array_slice( $menu_links, 0, 10 );
+
+			wp_cache_set( $cache_key, $menu_links, '', 10 * MINUTE_IN_SECONDS );
+
 		}
-
-		if ( empty( $menu_links ) || ! is_array( $menu_links ) ) {
-			return;
-		}
-
-		// Filter out duplicate links.
-		$menu_links = array_unique( $menu_links );
-
-		// pre-cache only 10 menu links.
-		$menu_links = array_slice( $menu_links, 0, 10 );
 
 		foreach ( $menu_links as $menu_link ) {
 			$scripts->precaching_routes()->register(
