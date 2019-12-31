@@ -32,6 +32,7 @@ class Service_Worker {
 		add_filter( 'wp_service_worker_navigation_caching_strategy_args', array( $this, 'filter_wp_service_worker_navigation_caching_strategy_args' ) );
 
 		add_action( 'wp_front_service_worker', array( $this, 'cache_images' ) );
+		add_action( 'wp_front_service_worker', array( $this, 'cache_theme_assets' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'precache_latest_blog_posts' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'precache_menu' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'enable_offline_google_analytics' ) );
@@ -97,6 +98,42 @@ class Service_Worker {
 		);
 
 	}
+
+	/**
+	 * Cache theme assets with runtime network-first caching strategy.
+	 * This includes both the parent theme and child theme.
+	 *
+	 * @see https://gist.github.com/westonruter/1a63d052beb579842461f6ad837715fb#file-basic-site-caching-php-L43-L67
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
+	public function cache_theme_assets( \WP_Service_Worker_Scripts $scripts ) {
+
+		$theme_directory_uri_patterns = array(
+			preg_quote( trailingslashit( get_template_directory_uri() ), '/' ),
+		);
+
+		if ( get_template() !== get_stylesheet() ) {
+			$theme_directory_uri_patterns[] = preg_quote( trailingslashit( get_stylesheet_directory_uri() ), '/' );
+		}
+
+		$scripts->caching_routes()->register(
+			'^(' . implode( '|', $theme_directory_uri_patterns ) . ').*',
+			array(
+				'strategy'  => \WP_Service_Worker_Caching_Routes::STRATEGY_NETWORK_FIRST,
+				'cacheName' => 'theme-assets',
+				'plugins'   => array(
+					'expiration' => array(
+						'maxEntries' => 25, // Limit the cached entries to the number of files loaded over network, e.g. JS, CSS, and PNG.
+					),
+				),
+			)
+		);
+
+	}
+
 
 	/**
 	 * Pre-Cache latest blog posts
