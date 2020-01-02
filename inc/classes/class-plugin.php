@@ -11,6 +11,7 @@ use \RT\PWA\Inc\Traits\Singleton;
 use \RT\PWA\Inc\Manifest;
 use \RT\PWA\Inc\Service_Worker;
 use \RT\PWA\Inc\Integration\Izooto;
+use \RT\PWA\Inc\Web_Push;
 
 /**
  * Class Plugin
@@ -28,6 +29,8 @@ class Plugin {
 
 		Manifest::get_instance();
 		Service_Worker::get_instance();
+
+		Web_Push::get_instance();
 
 		// Other plugins integration.
 		Izooto::get_instance();

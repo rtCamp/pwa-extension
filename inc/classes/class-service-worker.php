@@ -36,6 +36,7 @@ class Service_Worker {
 		add_action( 'wp_front_service_worker', array( $this, 'precache_latest_blog_posts' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'precache_menu' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'enable_offline_google_analytics' ) );
+		add_action( 'wp_front_service_worker', array( $this, 'manage_push_event' ) );
 
 	}
 
@@ -270,6 +271,23 @@ class Service_Worker {
 			)
 		);
 
+	}
+
+	/**
+	 * Manages Push event.
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
+	public function manage_push_event( \WP_Service_Worker_Scripts $scripts ) {
+
+		$scripts->register(
+			'manage',
+			array(
+				'src' => sprintf( '%s/assets/js/push-event.js', untrailingslashit( RT_PWA_EXTENSIONS_URL ) ),
+			)
+		);
 	}
 
 }
