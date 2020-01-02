@@ -77,6 +77,8 @@ function autoloader( $resource = '' ) {
 		require_once( $resource_path ); // phpcs:ignore
 	}
 
+	require_once sprintf( '%s/vendor/autoload.php', untrailingslashit( RT_PWA_EXTENSIONS_PATH ) );
+
 }
 
 spl_autoload_register( '\RT\PWA\Inc\Helpers\autoloader' );
