@@ -50,7 +50,7 @@ class Service_Worker {
 	 */
 	public function filter_wp_service_worker_navigation_caching_strategy( $caching_strategy ) {
 
-		return \WP_Service_Worker_Caching_Routes::STRATEGY_STALE_WHILE_REVALIDATE;
+		return \WP_Service_Worker_Caching_Routes::STRATEGY_NETWORK_FIRST;
 
 	}
 
