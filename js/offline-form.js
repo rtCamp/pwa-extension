@@ -4,7 +4,6 @@
 (() => {
 	const queue = new wp.serviceWorker.backgroundSync.Queue('wpPendingForm');
 	const errorMessages = {
-		"clientOffline": "It seems you are offline. Please check your internet connection and try again.",
 		"serverOffline": "The server appears to be down. Please try again later.",
 		"error"        : "Something prevented the page from being rendered. Please try again.",
 		"form"         : "Your form will be submitted once you are back online!"

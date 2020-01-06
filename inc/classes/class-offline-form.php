@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin offline comment class.
+ * Offline form submission class.
  *
  * @package rt-pwa-extensions
  */
@@ -10,7 +10,7 @@ namespace RT\PWA\Inc;
 use \RT\PWA\Inc\Traits\Singleton;
 
 /**
- * Class Plugin
+ * Class Offline_Form
  */
 class Offline_Form {
 
@@ -46,7 +46,7 @@ class Offline_Form {
 		$scripts->register(
 			'offline-form-submit', // Handle.
 			array(
-				'src'  => [ $this, 'get_offline_form_script' ],
+				'src'  => array( $this, 'get_offline_form_script' ),
 				'deps' => array(), // Dependency.
 			)
 		);
@@ -62,15 +62,15 @@ class Offline_Form {
 		$sw_script = file_get_contents( RT_PWA_EXTENSIONS_PATH . '/js/offline-form.js' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$sw_script = preg_replace( '#/\*\s*global.+?\*/#', '', $sw_script );
 
-		// Replace with offline template URLs.
+		// Replace with offline|error template URLs.
 		return str_replace(
 			array(
 				'ERROR_OFFLINE_URL',
-				'ERROR_500_URL'
+				'ERROR_500_URL',
 			),
 			array(
 				wp_service_worker_json_encode( add_query_arg( 'wp_error_template', 'offline', home_url( '/' ) ) ),
-				wp_service_worker_json_encode( add_query_arg( 'wp_error_template', '500', home_url( '/' ) ) )
+				wp_service_worker_json_encode( add_query_arg( 'wp_error_template', '500', home_url( '/' ) ) ),
 			),
 			$sw_script
 		);
