@@ -144,7 +144,7 @@ class Service_Worker {
 	 */
 	public function precache_latest_blog_posts( \WP_Service_Worker_Scripts $scripts ) {
 
-		$cache_key = 'rt_pwa_extensions_precacge_latest_posts';
+		$cache_key = 'rt_pwa_extensions_precache_latest_posts';
 
 		$recent_posts = wp_cache_get( $cache_key );
 
@@ -221,9 +221,17 @@ class Service_Worker {
 				foreach ( $menu_items as $menu_item ) {
 
 					// Don't precache external links.
-					if ( false !== strpos( $menu_item->url, home_url() ) ) {
-						$menu_links[] = $menu_item->url;
+					if ( false === strpos( $menu_item->url, home_url() ) ) {
+						continue;
 					}
+
+					// Don't precache blog page.
+					if ( user_trailingslashit( $menu_item->url ) === get_post_type_archive_link( 'post' ) ) {
+						continue;
+					}
+
+					$menu_links[] = $menu_item->url;
+
 				}
 			}
 
