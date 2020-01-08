@@ -73,7 +73,7 @@ class Offline_Form {
 		$sw_script = file_get_contents( RT_PWA_EXTENSIONS_PATH . '/js/offline-form.js' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$sw_script = preg_replace( '#/\*\s*global.+?\*/#', '', $sw_script );
 
-		$form_urls_regex = $this->get_form_urls();
+		$form_routes_regex = $this->get_form_urls();
 		// Replace with offline|error template URLs.
 		$sw_script = str_replace(
 			array(
@@ -86,7 +86,7 @@ class Offline_Form {
 				wp_service_worker_json_encode( $this->error_messages ),
 				wp_service_worker_json_encode( add_query_arg( 'wp_error_template', 'offline', home_url( '/' ) ) ),
 				wp_service_worker_json_encode( add_query_arg( 'wp_error_template', '500', home_url( '/' ) ) ),
-				$form_urls_regex,
+				$form_routes_regex,
 			),
 			$sw_script
 		);
@@ -100,19 +100,21 @@ class Offline_Form {
 	 * @return string
 	 */
 	private function get_form_urls() {
-		$string    = '';
-		$form_urls = get_option( 'pwa_extension_form_urls' );
-		if ( empty( $form_urls ) ) {
+		$string      = '';
+		$form_routes = get_option( 'rt_pwa_extension_options' );
+		if ( empty( $form_routes ) || ctype_space( $form_routes ) ) {
 			// Generate random string if no URLs specified.
 			// Random string ensures that no URL match.
 			$string = wp_generate_password( '30', false, false );
 		} else {
-			$urls = explode( ',', $form_urls );
-
-			// Create regex string like ( `contact|form|test` ).
-			foreach ( $urls as $url ) {
-				$url     = str_replace( '/', '\/', $url );
-				$string .= trim( $url ) . '|';
+			$routes = explode( PHP_EOL, $form_routes );
+			// Create regex string like ( `/contact|/form|/gravity-form` ).
+			foreach ( $routes as $route ) {
+				$route = preg_replace( '/\s+/', '', $route ); // Remove white spaces.
+				if ( empty( $route ) ) {
+					continue;
+				}
+				$string .= str_replace( '/', '\/', $route ) . '|';
 			}
 			// Remove `|` from end.
 			$string = rtrim( $string, '|' );
