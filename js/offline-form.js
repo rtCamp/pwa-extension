@@ -103,7 +103,7 @@
 	};
 
 	wp.serviceWorker.routing.registerRoute(
-		/FORM_URLS/,
+		/FORM_ROUTES/,
 		formHandler,
 		'POST'
 	);

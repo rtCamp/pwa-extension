@@ -74,13 +74,13 @@ class Offline_Form {
 		$sw_script = preg_replace( '#/\*\s*global.+?\*/#', '', $sw_script );
 
 		$form_routes_regex = $this->get_form_urls();
-		// Replace with offline|error template URLs.
+		// Replace with error messages | offline template url |error template url | form routes.
 		$sw_script = str_replace(
 			array(
 				'ERROR_MESSAGES',
 				'ERROR_OFFLINE_URL',
 				'ERROR_500_URL',
-				'FORM_URLS',
+				'FORM_ROUTES',
 			),
 			array(
 				wp_service_worker_json_encode( $this->error_messages ),

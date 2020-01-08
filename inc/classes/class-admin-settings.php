@@ -42,7 +42,7 @@ class Admin_Settings {
 	 * Setting section callback.
 	 */
 	public function callback_pwa_setting_section() {
-		esc_html_e( 'Add your form routes for offline form submission.' );
+		esc_html_e( 'Add your form routes for offline form submission.', 'pwa-extension' );
 	}
 
 	/**
@@ -110,6 +110,7 @@ class Admin_Settings {
 				}
 			}
 
+			// Set error message for white spaces.
 			if ( true === $white_space ) {
 				add_settings_error(
 					'rt_pwa_extension_options',
