@@ -85,18 +85,38 @@ class Admin_Settings {
 	 */
 	public function validate_setting( $input ) {
 
-		$validated = sanitize_text_field( $input );
+		$validated = sanitize_textarea_field( $input );
 
 		// Set error message when invalid.
 		if ( $validated !== $input ) {
 			$type    = 'error';
-			$message = __( 'Invalid Input', 'pwa-extension' );
+			$message = __( 'Invalid Form `Route`. Please enter valid form routes.', 'pwa-extension' );
 			add_settings_error(
-				'pwa_extension_form_urls',
-				esc_attr( 'settings_updated' ),
+				'rt_pwa_extension_options',
+				'pwa-extension-invalid-route',
 				$message,
 				$type
 			);
+		}
+
+		if ( $validated === $input ) {
+			$routes      = explode( PHP_EOL, $input );
+			$white_space = false;
+			foreach ( $routes as $route ) {
+				if ( false !== strpos( $route, ' ' ) ) {
+					$white_space = true;
+					break;
+				}
+			}
+
+			if ( true === $white_space ) {
+				add_settings_error(
+					'rt_pwa_extension_options',
+					'pwa-extension-white-space-not-allowed',
+					__( 'White space are not allowed in `Form Routes`.', 'pwa-extension' ),
+					'error'
+				);
+			}
 		}
 
 		return $validated;
