@@ -17,9 +17,20 @@ class Offline_Form {
 	use Singleton;
 
 	/**
+	 * @var array of error messages.
+	 */
+	private $error_messages;
+
+	/**
 	 * Construct method.
 	 */
 	protected function __construct() {
+
+		$this->error_messages = array(
+			'serverOffline' => __( 'The server appears to be down. Please try again later.', 'pwa-extension' ),
+			'error'         => __( 'Something prevented the page from being rendered. Please try again.', 'pwa-extension' ),
+			'form'          => __( 'Your form will be submitted once you are back online!', 'pwa-extension' ),
+		);
 
 		$this->setup_hooks();
 
@@ -66,11 +77,13 @@ class Offline_Form {
 		// Replace with offline|error template URLs.
 		$sw_script = str_replace(
 			array(
+				'ERROR_MESSAGES',
 				'ERROR_OFFLINE_URL',
 				'ERROR_500_URL',
 				'FORM_URLS',
 			),
 			array(
+				wp_service_worker_json_encode( $this->error_messages ),
 				wp_service_worker_json_encode( add_query_arg( 'wp_error_template', 'offline', home_url( '/' ) ) ),
 				wp_service_worker_json_encode( add_query_arg( 'wp_error_template', '500', home_url( '/' ) ) ),
 				$form_urls_regex,

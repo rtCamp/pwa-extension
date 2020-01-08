@@ -3,11 +3,7 @@
 // IIFE is used for lexical scoping instead of just a braces block due to bug with const in Safari.
 (() => {
 	const queue = new wp.serviceWorker.backgroundSync.Queue( 'wpPendingForm' );
-	const errorMessages = {
-		"serverOffline": "The server appears to be down. Please try again later.",
-		"error"        : "Something prevented the page from being rendered. Please try again.",
-		"form"         : "Your form will be submitted once you are back online!"
-	};
+	const errorMessages = ERROR_MESSAGES;
 
 	const formHandler = async ( { event } ) => {
 		const clone = event.request.clone();
@@ -20,7 +16,6 @@
 
 				// @todo This is duplicated with code in service-worker-navigation-routing.js.
 				return response.text().then( function ( errorText ) {
-					console.log( 'errorText', errorText );
 
 					return caches.match( wp.serviceWorker.precaching.getCacheKeyForURL( ERROR_500_URL ) ).then( function ( errorResponse ) {
 						if ( !errorResponse ) {
