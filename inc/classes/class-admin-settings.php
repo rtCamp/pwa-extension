@@ -51,6 +51,7 @@ class Admin_Settings {
 	public function callback_url_input() {
 		$value = get_option( 'rt_pwa_extension_options' );
 		printf( '<textarea name="rt_pwa_extension_options" rows="5">%1$s</textarea>', esc_html( $value ) );
+		printf( '<p><i>%1$s</i></p>', esc_html__( 'Use new line to separate multiple routes', 'pwa-extension' ) );
 	}
 
 	/**
