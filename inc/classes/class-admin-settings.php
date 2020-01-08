@@ -33,15 +33,31 @@ class Admin_Settings {
 	 * Register plugin setting.
 	 */
 	public function register_plugin_settings() {
-		add_option( 'pwa_extension_option_name', 'This is my option value.' );
-		register_setting( 'pwa_extension_group', 'pwa_extension_form_urls', array( $this, 'validate_setting' ) );
+		register_setting( $this->page_slug, 'rt_pwa_extension_options', array( $this, 'validate_setting' ) );
+		add_settings_section( 'pwa-extension-setting-options', __( 'Form URL Options', 'pwa-extension' ), array( $this, 'callback_pwa_setting_section' ), 'options-general.php' );
+		add_settings_field( 'pwa-extension-routes-input', __( 'Form Routes', 'pwa-extension' ), array( $this, 'callback_url_input' ), 'options-general.php', 'pwa-extension-setting-options' );
+	}
+
+	/**
+	 * Setting section callback.
+	 */
+	public function callback_pwa_setting_section() {
+		esc_html_e( 'Add your form routes for offline form submission.' );
+	}
+
+	/**
+	 * Setting Field callback.
+	 */
+	public function callback_url_input() {
+		$value = get_option( 'rt_pwa_extension_options' );
+		printf( '<textarea name="rt_pwa_extension_options" rows="5">%1$s</textarea>', esc_html( $value ) );
 	}
 
 	/**
 	 * Register plugin option page.
 	 */
 	public function register_options_page() {
-		add_options_page( 'PWA Extension Setting', 'PWA Extension Settings', 'manage_options', $this->page_slug, array( $this, 'options_page' ) );
+		add_options_page( __( 'PWA Extension Settings', 'pwa-extension' ), __( 'PWA Extension Settings', 'pwa-extension' ), 'manage_options', $this->page_slug, array( $this, 'options_page' ) );
 	}
 
 	/**
@@ -50,20 +66,10 @@ class Admin_Settings {
 	public function options_page() {
 		?>
 		<div>
-			<h2><?php esc_html_e( 'PWA Extension Setting', 'pwa-extension' ); ?></h2>
+			<h1><?php esc_html_e( 'PWA Extension Settings', 'pwa-extension' ); ?></h1>
 			<form method="post" action="options.php">
-				<?php settings_fields( 'pwa_extension_group' ); ?>
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row">
-							<label for="pwa_extension_form_urls"><?php esc_html_e( 'Offline Form URL:', 'pwa-extension' ); ?></label>
-						</th>
-						<td>
-							<input type="text" id="pwa_extension_form_urls" name="pwa_extension_form_urls" value="<?php echo esc_attr( get_option( 'pwa_extension_form_urls' ) ); ?>" />
-						</td>
-					</tr>
-				</table>
-				<p><?php esc_html_e( 'Note: Use comma(`,`) to separate multiple URLs.', 'pwa-extension' ); ?></p>
+				<?php settings_fields( $this->page_slug ); ?>
+				<?php do_settings_sections( 'options-general.php' ); ?>
 				<?php submit_button(); ?>
 			</form>
 		</div>
