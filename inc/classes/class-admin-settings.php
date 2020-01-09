@@ -35,7 +35,7 @@ class Admin_Settings {
 	public function register_plugin_settings() {
 		$args = array(
 			'type'              => 'string',
-			'description'       => 'Form routes for offline form submission.',
+			'description'       => __( 'Form routes for offline form submission.', 'pwa-extension' ),
 			'sanitize_callback' => array( $this, 'validate_setting' ),
 		);
 
