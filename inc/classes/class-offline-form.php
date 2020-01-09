@@ -27,9 +27,9 @@ class Offline_Form {
 	protected function __construct() {
 
 		$this->error_messages = array(
-			'serverOffline' => __( 'The server appears to be down. Please try again later.', 'pwa-extension' ),
-			'error'         => __( 'Something prevented the page from being rendered. Please try again.', 'pwa-extension' ),
-			'form'          => __( 'Your form will be submitted once you are back online!', 'pwa-extension' ),
+			'serverOffline' => esc_html__( 'The server appears to be down. Please try again later.', 'pwa-extension' ),
+			'error'         => esc_html__( 'Something prevented the page from being rendered. Please try again.', 'pwa-extension' ),
+			'form'          => esc_html__( 'Your form will be submitted once you are back online!', 'pwa-extension' ),
 		);
 
 		$this->setup_hooks();
@@ -108,7 +108,7 @@ class Offline_Form {
 			$string = wp_generate_password( '30', false, false );
 		} else {
 			$routes = explode( PHP_EOL, $form_routes );
-			// Create regex string like ( `/contact|/form|/gravity-form` ).
+			// Create regex string like ( '/contact|/form|/gravity-form' ).
 			foreach ( $routes as $route ) {
 				$route = preg_replace( '/\s+/', '', $route ); // Remove white spaces.
 				if ( empty( $route ) ) {
@@ -116,7 +116,7 @@ class Offline_Form {
 				}
 				$string .= str_replace( '/', '\/', $route ) . '|';
 			}
-			// Remove `|` from end.
+			// Remove '|' from end.
 			$string = rtrim( $string, '|' );
 		}
 

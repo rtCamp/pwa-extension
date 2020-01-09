@@ -33,8 +33,14 @@ class Admin_Settings {
 	 * Register plugin setting.
 	 */
 	public function register_plugin_settings() {
-		register_setting( $this->page_slug, 'rt_pwa_extension_options', array( $this, 'validate_setting' ) );
-		add_settings_section( 'pwa-extension-setting-options', __( 'Form URL Options', 'pwa-extension' ), array( $this, 'callback_pwa_setting_section' ), 'options-general.php' );
+		$args = array(
+			'type'              => 'string',
+			'description'       => 'Form routes for offline form submission.',
+			'sanitize_callback' => array( $this, 'validate_setting' ),
+		);
+
+		register_setting( $this->page_slug, 'rt_pwa_extension_options', $args );
+		add_settings_section( 'pwa-extension-setting-options', __( 'Form Routes Options', 'pwa-extension' ), array( $this, 'callback_pwa_setting_section' ), 'options-general.php' );
 		add_settings_field( 'pwa-extension-routes-input', __( 'Form Routes', 'pwa-extension' ), array( $this, 'callback_url_input' ), 'options-general.php', 'pwa-extension-setting-options' );
 	}
 
@@ -50,8 +56,8 @@ class Admin_Settings {
 	 */
 	public function callback_url_input() {
 		$value = get_option( 'rt_pwa_extension_options' );
-		printf( '<textarea name="rt_pwa_extension_options" rows="5">%1$s</textarea>', esc_html( $value ) );
-		printf( '<p><i>%1$s</i></p>', esc_html__( 'Use new line to separate multiple routes', 'pwa-extension' ) );
+		printf( '<textarea name="rt_pwa_extension_options" rows="5">%1$s</textarea>', esc_textarea( $value ) );
+		printf( '<p><i>%1$s</i></p>', esc_html__( 'Add multiple routes in separate new line.', 'pwa-extension' ) );
 	}
 
 	/**
@@ -69,9 +75,11 @@ class Admin_Settings {
 		<div>
 			<h1><?php esc_html_e( 'PWA Extension Settings', 'pwa-extension' ); ?></h1>
 			<form method="post" action="options.php">
-				<?php settings_fields( $this->page_slug ); ?>
-				<?php do_settings_sections( 'options-general.php' ); ?>
-				<?php submit_button(); ?>
+				<?php
+				settings_fields( $this->page_slug );
+				do_settings_sections( 'options-general.php' );
+				submit_button();
+				?>
 			</form>
 		</div>
 		<?php
@@ -91,7 +99,7 @@ class Admin_Settings {
 		// Set error message when invalid.
 		if ( $validated !== $input ) {
 			$type    = 'error';
-			$message = __( 'Invalid Form `Route`. Please enter valid form routes.', 'pwa-extension' );
+			$message = __( 'Invalid \'Form Route\'. Please enter valid form routes.', 'pwa-extension' );
 			add_settings_error(
 				'rt_pwa_extension_options',
 				'pwa-extension-invalid-route',
@@ -115,7 +123,7 @@ class Admin_Settings {
 				add_settings_error(
 					'rt_pwa_extension_options',
 					'pwa-extension-white-space-not-allowed',
-					__( 'White space are not allowed in `Form Routes`.', 'pwa-extension' ),
+					__( 'White space are not allowed in \'Form Routes\'.', 'pwa-extension' ),
 					'error'
 				);
 			}
