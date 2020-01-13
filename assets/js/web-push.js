@@ -1,5 +1,3 @@
-const applicationServerPublicKey = 'BGOxOFFkJX1hZd4CInZel4PnjCMkAFRKGD3xORlwItM4Sl1QS5L81rf2axzmSuj7Zt-T7blYt4GnBWxlfNpGZU0';
-
 if (!("Notification" in window)) {
 	console.log("This browser does not support desktop notification");
 } else if (Notification.permission === "granted") {
@@ -34,7 +32,6 @@ function getPermission() {
 }
 
 function getSubscription() {
-	console.log('Called');
 	
 	navigator.serviceWorker.getRegistration().then(function (swRegistration) {
 		swRegistration.pushManager.getSubscription()
