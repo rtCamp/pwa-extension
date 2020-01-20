@@ -276,10 +276,7 @@ class Service_Worker {
 		$scripts->register(
 			'offline-google-analytics',
 			array(
-				// Ignoring because we cannot cover anonymous functions and creating a seperate JS file for one line seems inappropraite.
-				'src' => function() {
-					return 'workbox.googleAnalytics.initialize();'; // @codeCoverageIgnore
-				},
+				'src' => sprintf( '%s/assets/js/offline-analytics.js', untrailingslashit( RT_PWA_EXTENSIONS_URL ) ),
 			)
 		);
 
