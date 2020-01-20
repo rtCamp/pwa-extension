@@ -27,7 +27,7 @@ function _manually_load_plugin() {
 	require_once dirname( dirname( __FILE__ ) ) . '/rt-pwa-extensions.php';
 	require_once dirname( __FILE__ ) . '/helpers/class-utility.php';
 
-	require_once dirname( dirname( dirname( __FILE__ ) ) ) . '/pwa/pwa.php';
+	require_once dirname( dirname( __FILE__ ) ) . '/vendor/pwa/pwa.php';
 
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
