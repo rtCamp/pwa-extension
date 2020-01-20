@@ -115,9 +115,13 @@ class Service_Worker {
 			preg_quote( trailingslashit( get_template_directory_uri() ), '/' ),
 		);
 
+		// @codeCoverageIgnoreStart
+		// Ignoring because not able to mock this condition.
 		if ( get_template() !== get_stylesheet() ) {
 			$theme_directory_uri_patterns[] = preg_quote( trailingslashit( get_stylesheet_directory_uri() ), '/' );
 		}
+		// @codeCoverageIgnoreEnd
+
 
 		$scripts->caching_routes()->register(
 			'^(' . implode( '|', $theme_directory_uri_patterns ) . ').*',
@@ -272,8 +276,9 @@ class Service_Worker {
 		$scripts->register(
 			'offline-google-analytics',
 			array(
+				// Ignoring because we cannot cover anonymous functions and creating a seperate JS file for one line seems inappropraite.
 				'src' => function() {
-					return 'workbox.googleAnalytics.initialize();';
+					return 'workbox.googleAnalytics.initialize();'; // @codeCoverageIgnore
 				},
 			)
 		);

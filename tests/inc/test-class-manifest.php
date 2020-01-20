@@ -59,41 +59,7 @@ class Test_Manifest extends \WP_UnitTestCase {
 		}
 		$expected_data = [
 			'test_key' => 'test_value',
-			'icons'    =>
-			[
-				[
-					'src'   => '/srv/www/wordpress-develop/public_html/tests/phpunit/includes/../data/themedir1/default/assets/img/icon-72x72.png',
-					'sizes' => '72x72',
-				],
-				[
-					'src'   => '/srv/www/wordpress-develop/public_html/tests/phpunit/includes/../data/themedir1/default/assets/img/icon-96x96.png',
-					'sizes' => '96x96',
-				],
-				[
-					'src'   => '/srv/www/wordpress-develop/public_html/tests/phpunit/includes/../data/themedir1/default/assets/img/icon-128x128.png',
-					'sizes' => '128x128',
-				],
-				[
-					'src'   => '/srv/www/wordpress-develop/public_html/tests/phpunit/includes/../data/themedir1/default/assets/img/icon-144x144.png',
-					'sizes' => '144x144',
-				],
-				[
-					'src'   => '/srv/www/wordpress-develop/public_html/tests/phpunit/includes/../data/themedir1/default/assets/img/icon-152x152.png',
-					'sizes' => '152x152',
-				],
-				[
-					'src'   => '/srv/www/wordpress-develop/public_html/tests/phpunit/includes/../data/themedir1/default/assets/img/icon-192x192.png',
-					'sizes' => '192x192',
-				],
-				[
-					'src'   => '/srv/www/wordpress-develop/public_html/tests/phpunit/includes/../data/themedir1/default/assets/img/icon-384x384.png',
-					'sizes' => '384x384',
-				],
-				[
-					'src'   => '/srv/www/wordpress-develop/public_html/tests/phpunit/includes/../data/themedir1/default/assets/img/icon-512x512.png',
-					'sizes' => '512x512',
-				],
-			],
+			'icons'    => $icons,
 			'display'  => 'standalone',
 		];
 
