@@ -3,7 +3,7 @@
 namespace RT\PWA\Tests;
 
 use RT\PWA\Inc\Manifest;
-use WP_Google_Login\Tests\Utility;
+
 
 /**
  * Class Manifest

@@ -3,7 +3,6 @@
 namespace RT\PWA\Tests;
 
 use RT\PWA\Inc\Service_Worker;
-use WP_Google_Login\Tests\Utility;
 
 /**
  * Class Service_Worker

@@ -1,13 +1,11 @@
 <?php
 /**
- * Test_Google_Auth class for all function test.
+ * Utility Methods
  *
- * @author  Suraj Singh <suraj.sk243@gmail.com>
- *
- * @package wp-google-login
+ * @package rt-pwa-extensions
  */
 
-namespace WP_Google_Login\Tests;
+namespace RT\PWA\Tests;
 
 /**
  * Class Utility

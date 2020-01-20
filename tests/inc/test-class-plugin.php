@@ -3,7 +3,6 @@
 namespace RT\PWA\Tests;
 
 use RT\PWA\Inc\Plugin;
-use WP_Google_Login\Tests\Utility;
 
 /**
  * Class Plugin
