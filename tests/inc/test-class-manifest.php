@@ -47,7 +47,17 @@ class Test_Manifest extends \WP_UnitTestCase {
 		// Empty manifest.
 		$this->assertEmpty( $this->_instance->filter_web_app_manifest( '' ) );
 
-		$expected_data = array(
+		$icon_sizes = [ '72', '96', '128', '144', '152', '192', '384', '512' ];
+
+		foreach ( $icon_sizes as $icon_size ) {
+
+			$icons[] = [
+				'src'   => sprintf( '%1$s/assets/img/icon-%2$sx%2$s.png', get_template_directory_uri(), $icon_size ),
+				'sizes' => sprintf( '%1$sx%1$s', $icon_size ),
+			];
+
+		}
+		$expected_data = [
 			'test_key' => 'test_value',
 			'icons'    =>
 			[
@@ -85,7 +95,7 @@ class Test_Manifest extends \WP_UnitTestCase {
 				],
 			],
 			'display'  => 'standalone',
-		);
+		];
 
 		$arg = [
 			'test_key' => 'test_value',
