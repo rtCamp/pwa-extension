@@ -81,4 +81,4 @@ function autoloader( $resource = '' ) {
 
 }
 
-spl_autoload_register( '\RT\Web_push\Web_push\Inc\Helpers\autoloader' );
+spl_autoload_register( '\RT\Web_push\Inc\Helpers\autoloader' );
