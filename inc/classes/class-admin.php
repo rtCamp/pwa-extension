@@ -1,8 +1,8 @@
 <?php
 
-namespace RT\PWA\Inc;
+namespace RT\Web_push\Inc;
 
-use \RT\PWA\Inc\Traits\Singleton;
+use \RT\Web_push\Inc\Traits\Singleton;
 
 class Admin {
 	use Singleton;

@@ -5,7 +5,7 @@
  * @package rt-pwa-extensions
  */
 
-namespace RT\PWA\Inc\Helpers;
+namespace RT\Web_push\Inc\Helpers;
 
 /**
  * Auto loader function.
@@ -17,7 +17,7 @@ namespace RT\PWA\Inc\Helpers;
 function autoloader( $resource = '' ) {
 
 	$resource_path  = false;
-	$namespace_root = 'RT\PWA\\';
+	$namespace_root = 'RT\Web_push\\';
 	$resource       = trim( $resource, '\\' );
 
 	if ( empty( $resource ) || strpos( $resource, '\\' ) === false || strpos( $resource, $namespace_root ) !== 0 ) {
@@ -81,4 +81,4 @@ function autoloader( $resource = '' ) {
 
 }
 
-spl_autoload_register( '\RT\PWA\Inc\Helpers\autoloader' );
+spl_autoload_register( '\RT\Web_push\Web_push\Inc\Helpers\autoloader' );

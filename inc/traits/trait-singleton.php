@@ -25,7 +25,7 @@
  * @package rt-pwa-extensions
  */
 
-namespace RT\PWA\Inc\Traits;
+namespace RT\Web_push\Inc\Traits;
 
 trait Singleton {
 
