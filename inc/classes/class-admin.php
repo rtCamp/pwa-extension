@@ -3,8 +3,6 @@
 namespace RT\PWA\Inc;
 
 use \RT\PWA\Inc\Traits\Singleton;
-use \Minishlink\WebPush\WebPush;
-use \Minishlink\WebPush\Subscription;
 
 class Admin {
 	use Singleton;

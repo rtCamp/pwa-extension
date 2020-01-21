@@ -36,6 +36,7 @@ class Web_Push {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 11 );
 		add_action( 'add_meta_boxes', array( $this, 'push_notifications_meta_box' ) );
 		add_action( 'save_post', array( $this, 'send_notification_on_publish' ), 10, 2 );
+		add_action( 'wp_front_service_worker', array( $this, 'manage_push_event' ) );
 
 	}
 
@@ -274,6 +275,23 @@ class Web_Push {
 			) $charset_collate;";
 
 		\dbDelta( $sql );
+	}
+
+	/**
+	 * Manages Push event.
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
+	public function manage_push_event( \WP_Service_Worker_Scripts $scripts ) {
+
+		$scripts->register(
+			'manage',
+			array(
+				'src' => sprintf( '%s/assets/js/push-event.js', untrailingslashit( RT_PWA_EXTENSIONS_URL ) ),
+			)
+		);
 	}
 
 }
