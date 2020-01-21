@@ -68,7 +68,7 @@ function autoloader( $resource = '' ) {
 				break;
 		}
 
-		$resource_path = sprintf( '%s/inc/%s/%s.php', untrailingslashit( RT_PWA_EXTENSIONS_PATH ), $directory, $file_name );
+		$resource_path = sprintf( '%s/inc/%s/%s.php', untrailingslashit( RT_PWA_PUSH_PATH ), $directory, $file_name );
 
 	}
 
@@ -77,7 +77,7 @@ function autoloader( $resource = '' ) {
 		require_once( $resource_path ); // phpcs:ignore
 	}
 
-	require_once sprintf( '%s/vendor/autoload.php', untrailingslashit( RT_PWA_EXTENSIONS_PATH ) );
+	require_once sprintf( '%s/vendor/autoload.php', untrailingslashit( RT_PWA_PUSH_PATH ) );
 
 }
 

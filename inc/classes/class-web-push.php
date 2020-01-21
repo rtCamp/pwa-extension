@@ -47,11 +47,11 @@ class Web_Push {
 	 */
 	public function enqueue_assets() {
 
-		$fmtime = filemtime( RT_PWA_EXTENSIONS_PATH . '/assets/js/web-push.js' );
+		$fmtime = filemtime( RT_PWA_PUSH_PATH . '/assets/js/web-push.js' );
 
 		wp_register_script(
 			'web-push',
-			RT_PWA_EXTENSIONS_URL . '/assets/js/web-push.js',
+			RT_PWA_PUSH_URL . '/assets/js/web-push.js',
 			array( 'jquery' ),
 			$fmtime,
 			true
@@ -289,7 +289,7 @@ class Web_Push {
 		$scripts->register(
 			'manage',
 			array(
-				'src' => sprintf( '%s/assets/js/push-event.js', untrailingslashit( RT_PWA_EXTENSIONS_URL ) ),
+				'src' => sprintf( '%s/assets/js/push-event.js', untrailingslashit( RT_PWA_PUSH_URL ) ),
 			)
 		);
 	}
