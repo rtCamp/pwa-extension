@@ -9,6 +9,8 @@
  * @package rt-pwa-extensions
  */
 
+use RT\PWA\Inc\Web_Push;
+
 define( 'RT_PWA_EXTENSIONS_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'RT_PWA_EXTENSIONS_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
@@ -25,3 +27,5 @@ function rt_pwa_extensions_plugin_loader() {
 	\RT\PWA\Inc\Plugin::get_instance();
 }
 rt_pwa_extensions_plugin_loader();
+
+register_activation_hook( __FILE__, array( Web_Push::get_instance(), 'susbcription_data_table' ) );

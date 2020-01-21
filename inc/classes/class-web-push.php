@@ -15,6 +15,8 @@ class Web_Push {
 	 */
 	public function __construct() {
 
+		global $wpdb;
+
 		$vapid_public_key  = get_option( 'vapid_public_key' );
 		$vapid_private_key = get_option( 'vapid_private_key' );
 
@@ -26,7 +28,8 @@ class Web_Push {
 			),
 		);
 
-		$this->web_push = new WebPush( $auth );
+		$this->web_push   = new WebPush( $auth );
+		$this->table_name = $wpdb->prefix . 'push_susbscriptions';
 
 		add_action( 'wp_ajax_update_subscription', array( $this, 'update_subscription_record' ) );
 		add_action( 'wp_ajax_nopriv_update_subscription', array( $this, 'update_subscription_record' ) );
@@ -48,7 +51,7 @@ class Web_Push {
 		wp_register_script(
 			'web-push',
 			RT_PWA_EXTENSIONS_URL . '/assets/js/web-push.js',
-			[ 'jquery' ],
+			array( 'jquery' ),
 			$fmtime,
 			true
 		);
@@ -64,15 +67,15 @@ class Web_Push {
 
 	public function send( $payload ) {
 
-		$subscriptions = get_option( 'push_subscribers' );
+		$subscriptions = $this->get_active_susbcribers();
 
 		foreach ( $subscriptions as $subscription ) {
 			$subscription_object = Subscription::create(
-				[
-					'endpoint'  => $subscription['endpoint'],
-					'publicKey' => $subscription['keys']['p256dh'],
-					'authToken' => $subscription['keys']['auth'],
-				]
+				array(
+					'endpoint'  => $subscription['user_endpoint'],
+					'publicKey' => $subscription['p256dh'],
+					'authToken' => $subscription['auth'],
+				)
 			);
 
 			$this->web_push->sendNotification(
@@ -80,6 +83,36 @@ class Web_Push {
 				$payload
 			);
 		}
+
+		$this->update_active_subscribers();
+	}
+
+	/**
+	 * Get active push subscribers.
+	 *
+	 * @return void
+	 */
+	public function get_active_susbcribers() {
+
+		global $wpdb;
+
+		$results = $wpdb->get_results(
+			"SELECT * FROM {$wpdb->prefix}push_susbscriptions WHERE device_status=1",
+			ARRAY_A
+		);
+
+		return $results;
+
+	}
+
+	/**
+	 * Update status of unsubscribed users.
+	 *
+	 * @return void
+	 */
+	public function update_active_subscribers() {
+
+		global $wpdb;
 
 		/**
 		 * Check sent results
@@ -89,12 +122,11 @@ class Web_Push {
 		foreach ( $this->web_push->flush() as $report ) {
 			$endpoint = $report->getRequest()->getUri()->__toString();
 
-			if ( $report->isSuccess() ) {
-				error_log( var_export( "[v] Message sent successfully for subscription {$endpoint}.", true ) );
-			} else {
-				error_log( var_export( "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}", true ) );
+			if ( $report->isSubscriptionExpired() ) {
+				$wpdb->update( $this->table_name, array( 'device_status' => 0 ), array( 'user_endpoint' => $endpoint ) );
 			}
 		}
+
 	}
 
 
@@ -107,14 +139,10 @@ class Web_Push {
 
 		global $wpdb;
 
-		$subscription        = json_decode( filter_input( INPUT_POST, 'subscription' ), true );
-		$subscription_list   = get_option( 'push_subscribers' ) ?? [];
-		$subscription_list[] = $subscription;
-
-		$table_name = $wpdb->prefix . 'push_susbscriptions';
+		$subscription = json_decode( filter_input( INPUT_POST, 'subscription', FILTER_DEFAULT ), true );
 
 		$is_successfull = $wpdb->insert(
-			$table_name,
+			$this->table_name,
 			array(
 				'user_endpoint'   => $subscription['endpoint'],
 				'expiration_time' => $subscription['expirationTime'],
@@ -128,11 +156,11 @@ class Web_Push {
 		}
 
 		$subscription_object = Subscription::create(
-			[
+			array(
 				'endpoint'  => $subscription['endpoint'],
 				'publicKey' => $subscription['keys']['p256dh'],
 				'authToken' => $subscription['keys']['auth'],
-			]
+			)
 		);
 
 		$payload = array(
@@ -143,22 +171,20 @@ class Web_Push {
 
 		$this->web_push->sendNotification(
 			$subscription_object,
-			json_encode( $payload )
+			wp_json_encode( $payload )
 		);
 
 		foreach ( $this->web_push->flush() as $report ) {
 			$endpoint = $report->getRequest()->getUri()->__toString();
-
-			if ( $report->isSuccess() ) {
-				error_log( var_export( "[v] Message sent successfully for subscription {$endpoint}.", true ) );
-
-			} else {
-				error_log( var_export( "[x] Message failed to sent for subscription {$endpoint}: {$report->getReason()}", true ) );
-			}
 		}
 
 	}
 
+	/**
+	 * Add Push notifications meta box.
+	 *
+	 * @return void
+	 */
 	public function push_notifications_meta_box() {
 
 		add_meta_box(
@@ -216,22 +242,27 @@ class Web_Push {
 				'url'   => get_permalink( $post ),
 			);
 
-			$push_data = json_encode( $push_data );
+			$push_data = wp_json_encode( $push_data );
 
 			$this->send( $push_data );
 		}
 
 	}
 
-	public static function susbcription_data_table() {
+	/**
+	 * Create subscription table on plugin activation.
+	 *
+	 * @return void
+	 */
+	public function susbcription_data_table() {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		global $wpdb;
-		$table_name      = $wpdb->prefix . 'push_susbscriptions';
+
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
+		$sql = "CREATE TABLE IF NOT EXISTS $this->table_name (
 				subscription_id bigint(20) NOT NULL AUTO_INCREMENT,
 				user_endpoint varchar(200) NOT NULL UNIQUE,
 				expiration_time varchar(30),

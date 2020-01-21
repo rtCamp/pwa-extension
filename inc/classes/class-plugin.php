@@ -31,7 +31,6 @@ class Plugin {
 		Service_Worker::get_instance();
 
 		Web_Push::get_instance();
-		Web_Push::susbcription_data_table();
 
 		// Other plugins integration.
 		Izooto::get_instance();
