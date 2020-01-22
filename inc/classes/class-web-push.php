@@ -20,6 +20,10 @@ class Web_Push {
 		$vapid_public_key  = get_option( 'vapid_public_key' );
 		$vapid_private_key = get_option( 'vapid_private_key' );
 
+		if ( empty( $vapid_private_key ) || empty( $vapid_public_key ) ) {
+			return;
+		}
+
 		$auth = array(
 			'VAPID' => array(
 				'subject'    => 'https://github.com/Minishlink/web-push-php-example/',
@@ -29,7 +33,6 @@ class Web_Push {
 		);
 
 		$this->web_push   = new WebPush( $auth );
-		$this->table_name = $wpdb->prefix . 'push_susbscriptions';
 
 		add_action( 'wp_ajax_update_subscription', array( $this, 'update_subscription_record' ) );
 		add_action( 'wp_ajax_nopriv_update_subscription', array( $this, 'update_subscription_record' ) );
@@ -115,6 +118,8 @@ class Web_Push {
 
 		global $wpdb;
 
+		$table_name = $wpdb->prefix . 'push_susbscriptions';
+
 		/**
 		 * Check sent results
 		 *
@@ -124,7 +129,7 @@ class Web_Push {
 			$endpoint = $report->getRequest()->getUri()->__toString();
 
 			if ( $report->isSubscriptionExpired() ) {
-				$wpdb->update( $this->table_name, array( 'device_status' => 0 ), array( 'user_endpoint' => $endpoint ) );
+				$wpdb->update( $table_name, array( 'device_status' => 0 ), array( 'user_endpoint' => $endpoint ) );
 			}
 		}
 
@@ -141,9 +146,10 @@ class Web_Push {
 		global $wpdb;
 
 		$subscription = json_decode( filter_input( INPUT_POST, 'subscription', FILTER_DEFAULT ), true );
+		$table_name = $wpdb->prefix . 'push_susbscriptions';
 
 		$is_successfull = $wpdb->insert(
-			$this->table_name,
+			$table_name,
 			array(
 				'user_endpoint'   => $subscription['endpoint'],
 				'expiration_time' => $subscription['expirationTime'],
@@ -263,7 +269,9 @@ class Web_Push {
 
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE IF NOT EXISTS $this->table_name (
+		$table_name = $wpdb->prefix . 'push_susbscriptions';
+
+		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
 				subscription_id bigint(20) NOT NULL AUTO_INCREMENT,
 				user_endpoint varchar(200) NOT NULL UNIQUE,
 				expiration_time varchar(30),
