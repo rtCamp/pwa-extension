@@ -34,6 +34,9 @@ function getPermission() {
 function getSubscription() {
 	
 	navigator.serviceWorker.getRegistration().then(function (swRegistration) {
+		if( ! swRegistration ) {
+			return;
+		}
 		swRegistration.pushManager.getSubscription()
 			.then(function (subscription) {
 				isSubscribed = !(subscription === null);
