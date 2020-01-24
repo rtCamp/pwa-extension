@@ -43,8 +43,6 @@ function getSubscription() {
 
 				if (!isSubscribed) {
 					subscribeUser(swRegistration);
-				} else {
-					console.log(JSON.stringify(subscription));
 				}
 
 			});
