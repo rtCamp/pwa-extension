@@ -152,7 +152,7 @@ class Web_Push {
 			$table_name,
 			array(
 				'user_endpoint'   => $subscription['endpoint'],
-				'expiration_time' => $subscription['expirationTime'],
+				'expiration_time' => $subscription['expirationTime'] ?? '',
 				'auth'            => $subscription['keys']['auth'],
 				'p256dh'          => $subscription['keys']['p256dh'],
 			)
@@ -271,9 +271,9 @@ class Web_Push {
 
 		$table_name = $wpdb->prefix . 'push_susbscriptions';
 
-		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
+		$sql = "CREATE TABLE $table_name (
 				subscription_id bigint(20) NOT NULL AUTO_INCREMENT,
-				user_endpoint varchar(200) NOT NULL UNIQUE,
+				user_endpoint varchar(350) NOT NULL UNIQUE,
 				expiration_time varchar(30),
 				auth varchar(100) NOT NULL,
 				p256dh varchar(100) NOT NULL,
