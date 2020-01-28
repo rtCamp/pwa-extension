@@ -61,7 +61,7 @@ Once you've decided to commit the time to seeing your pull request through, plea
 
 1. Respond to code review feedback in a timely manner, recognizing development is a collaborative process.
 
-1. Once your pull request has passed code review and tests, it will be merged into develop and be in the pipeline for the next release.
+1. You need at least one approval and Once your pull request has passed code review and tests, it will be merged into develop and be in the pipeline for the next release.
 
 
 ## Change Log
