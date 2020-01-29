@@ -79,6 +79,16 @@ Once you've decided to commit the time to seeing your pull request through, plea
 - `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme//assets/img/icon-{width x height}.png'`.
 - Offline reading by caching assets and pages.
 
+## Unit testing
+
+- Setup local unit test environment by running script from terminal
+
+```./bin/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]```
+
+- Execute `phpunit` in terminal from repository to run all test cases.
+
+- Execute `phpunit ./tests/inc/test-class.php` in terminal with file path to run specific tests.
+
 ## Does this interest you?
 
 <a href="https://rtcamp.com/"><img src="https://rtcamp.com/wp-content/uploads/2019/04/github-banner@2x.png" alt="Join us at rtCamp, we specialize in providing high performance enterprise WordPress solutions"></a>

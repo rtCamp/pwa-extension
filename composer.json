@@ -1,0 +1,17 @@
+{
+    "name": "deepak/pwa-extension",
+    "require": {
+        "wpackagist-plugin/pwa": "*"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url" : "https://wpackagist.org"
+        }
+    ],
+    "extra": {
+        "installer-paths": {
+            "vendor/{$name}/": ["type:wordpress-plugin"]
+        }
+    }
+}
