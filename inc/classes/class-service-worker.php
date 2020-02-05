@@ -135,6 +135,15 @@ class Service_Worker {
 
 	}
 
+	/**
+	 * Cache Gutenberg block-library assets with runtime network-first caching strategy.
+	 *
+	 * @see https://gist.github.com/westonruter/1a63d052beb579842461f6ad837715fb#file-basic-site-caching-php-L43-L67
+	 *
+	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
+	 *
+	 * @return void
+	 */
 	public function cache_gutenberg_assets( \WP_Service_Worker_Scripts $scripts ) {
 
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
