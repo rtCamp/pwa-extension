@@ -25,6 +25,16 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 - `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme//assets/img/icon-{width x height}.png'`.
 - Offline reading by caching assets and pages.
 
+### Offline Form Submission.
+- Submit gravity form even if you are offline. Plugin will send form response once you get back online.
+- Add form routes to enable offline form submission in plugin settings page.
+e.g Enable offline form submission with following settings for the forms available on routes `example.com/contact` and `example.com/feedback`
+```
+/contact
+/feedback
+```
+ 
+
 ## Integration with izooto plugin.
 
 - Registers izooto service worker using `wp_front_service_worker` hook to main service worker file
