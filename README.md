@@ -8,7 +8,7 @@
 
 An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to homescreen` and `offline reading` features of PWA.
 
-**Contributors:** [rtCamp](https://github.com/rtCamp/)
+**Author:** [rtCamp](https://github.com/rtCamp/)
 
 **Tags:** [pwa](https://wordpress.org/plugins/tags/pwa)
 **Requires at least:** 4.9
@@ -30,6 +30,40 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 - Registers izooto service worker using `wp_front_service_worker` hook to main service worker file
 - Removes Service worker code of izooto from `?izooto=sw` to prevent conflicting it with main service worker.
 
+## Contributors
+- [Chandra Patel](https://github.com/chandrapatel/)
+- [Pradeep Sonawane](https://github.com/pradeep910/)
+- [Sagar Nasit](https://github.com/sagarnasit/)
+
+## Contributing
+
+### Report a Bug
+
+Before you create a new issue, please search [existing issues](https://github.com/rtCamp/pwa-extension/issues) to see if there’s an existing resolution to it, or if it’s already been fixed in a newer version.
+
+Once you’ve done a bit of searching and discovered there isn’t an open or fixed issue for your bug, please [create a new issue](https://github.com/rtCamp/pwa-extension/issues/new). Include as much detail as you can, and clear steps to reproduce if possible.
+
+### Create a pull request
+
+Want to contribute a new feature? Please first open a new issue to discuss whether the feature is a good fit for the project.
+
+Once you've decided to commit the time to seeing your pull request through, please follow our guidelines for creating a pull request.
+
+1. Search existing issues. If you can’t find anything related to what you want to work on, open a new issue.
+
+1. Fork the repository.
+
+1. Create a branch from `develop` for each issue you’d like to address. Commit your changes.
+
+1. Push the code changes from your local clone to your fork.
+
+1. Open a pull request.
+
+1. Respond to code review feedback in a timely manner, recognizing development is a collaborative process.
+
+1. You need at least one approval and Once your pull request has passed code review and tests, it will be merged into `develop` and be in the pipeline for the next release.
+
+
 ## Change Log
 
 ### v1.0.2 (24-12-2019)
@@ -44,6 +78,16 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 
 - `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme//assets/img/icon-{width x height}.png'`.
 - Offline reading by caching assets and pages.
+
+## Unit testing
+
+- Setup local unit test environment by running script from terminal
+
+```./bin/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]```
+
+- Execute `phpunit` in terminal from repository to run all test cases.
+
+- Execute `phpunit ./tests/inc/test-class.php` in terminal with file path to run specific tests.
 
 ## Does this interest you?
 
