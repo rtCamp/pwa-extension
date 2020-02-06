@@ -74,6 +74,12 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 				'type'     => 'action',
 				'name'     => 'wp_front_service_worker',
 				'priority' => 10,
+				'listener' => 'cache_gutenberg_assets',
+			],
+			[
+				'type'     => 'action',
+				'name'     => 'wp_front_service_worker',
+				'priority' => 10,
 				'listener' => 'precache_latest_blog_posts',
 			],
 			[
@@ -172,6 +178,50 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 
 		$this->assertEquals( $expected_data, $routes[0]['route'] );
 
+	}
+
+	/**
+	 * @covers ::cache_gutenberg_assets
+	 */
+	public function test_cache_gutenberg_assets() {
+
+		// Test for Core gutenberg assets
+		$this->_instance->cache_gutenberg_assets( $this->scripts );
+
+		$routes = $this->scripts->caching_routes()->get_all();
+
+		$this->assertNotEmpty( $routes );
+
+		$expected_data = '/wp-includes/css/dist/block-library/.*\.(?:css|js)(\?.*)?$';
+
+		$this->assertEquals( $expected_data, $routes[0]['route'] );
+
+	}
+
+	/**
+	 * @covers ::cache_gutenberg_assets
+	 */
+	public function test_cache_gutenberg_assets_plugin() {
+		// Test for gutenberg plugin assets
+		$default_plugins = get_option( 'active_plugins' );
+
+		$active_plugin = [
+			'gutenberg/gutenberg.php',
+		];
+
+		update_option( 'active_plugins', $active_plugin );
+
+		$this->_instance->cache_gutenberg_assets( $this->scripts );
+
+		$routes = $this->scripts->caching_routes()->get_all();
+
+		$this->assertNotEmpty( $routes );
+
+		$expected_data = '/wp-content/plugins/gutenberg/.*\.(?:css|js)(\?.*)?$';
+
+		$this->assertEquals( $expected_data, $routes[0]['route'] );
+
+		update_option( 'active_plugins', $default_plugins );
 	}
 
 	/**
