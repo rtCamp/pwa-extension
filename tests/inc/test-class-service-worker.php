@@ -12,14 +12,13 @@ use RT\PWA\Inc\Service_Worker;
 class Test_Service_Worker extends \WP_UnitTestCase {
 
 	/**
-	 * This google_auth data member will contain google_auth object.
 	 *
 	 * @var \RT\PWA\Inc\Service_Worker
 	 */
 	protected $_instance = false;
 
 	/**
-	 * This function set the instance for class google-auth.
+	 * This function set the instance for class Service_Worker
 	 */
 	public function setUp(): void {
 
@@ -94,7 +93,7 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 			$this->assertEquals(
 				$hook['priority'],
 				call_user_func( sprintf( 'has_%s', $hook['type'] ), $hook['name'], array( $this->_instance, $hook['listener'] ) ),
-				sprintf( '\Artnews\Inc\Archive::_setup_hooks(); failed to register %1$s "%2$s" to %3$s()', $hook['type'], $hook['name'], $hook['listener'] )
+				sprintf( '\RT\PWA\Inc\Service_Worker::__construct(); failed to register %1$s "%2$s" to %3$s()', $hook['type'], $hook['name'], $hook['listener'] )
 			);
 		}
 

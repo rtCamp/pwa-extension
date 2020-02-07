@@ -12,14 +12,13 @@ use RT\PWA\Inc\Plugin;
 class Test_Plugin extends \WP_UnitTestCase {
 
 	/**
-	 * This google_auth data member will contain google_auth object.
 	 *
 	 * @var \RT\PWA\Inc\Plugin
 	 */
 	protected $_instance = false;
 
 	/**
-	 * This function set the instance for class google-auth.
+	 * This function set the instance for class Plugin.
 	 */
 	public function setUp(): void {
 

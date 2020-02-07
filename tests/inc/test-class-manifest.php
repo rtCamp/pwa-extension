@@ -13,14 +13,13 @@ use RT\PWA\Inc\Manifest;
 class Test_Manifest extends \WP_UnitTestCase {
 
 	/**
-	 * This google_auth data member will contain google_auth object.
 	 *
 	 * @var \RT\PWA\Inc\Manifest
 	 */
 	protected $_instance = false;
 
 	/**
-	 * This function set the instance for class google-auth.
+	 * This function set the instance for class Manifest.
 	 */
 	public function setUp(): void {
 

@@ -71,6 +71,12 @@ class Admin_Settings {
 	 * Settings page form.
 	 */
 	public function options_page() {
+
+		// User Require Capability to edit page.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'pwa-extension' ) );
+		}
+
 		?>
 		<div>
 			<h1><?php esc_html_e( 'PWA Extension Settings', 'pwa-extension' ); ?></h1>
