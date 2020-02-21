@@ -39,9 +39,9 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 
 ### Report a Bug
 
-Before you create a new issue, please search [existing issues](https://github.com/rtCamp/blank-theme/issues) to see if there’s an existing resolution to it, or if it’s already been fixed in a newer version.
+Before you create a new issue, please search [existing issues](https://github.com/rtCamp/pwa-extension/issues) to see if there’s an existing resolution to it, or if it’s already been fixed in a newer version.
 
-Once you’ve done a bit of searching and discovered there isn’t an open or fixed issue for your bug, please [create a new issue](https://github.com/rtCamp/blank-theme/issues/new). Include as much detail as you can, and clear steps to reproduce if possible.
+Once you’ve done a bit of searching and discovered there isn’t an open or fixed issue for your bug, please [create a new issue](https://github.com/rtCamp/pwa-extension/issues/new). Include as much detail as you can, and clear steps to reproduce if possible.
 
 ### Create a pull request
 
