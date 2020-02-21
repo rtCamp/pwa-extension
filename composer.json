@@ -1,6 +1,6 @@
 {
-    "name": "deepak/pwa-extension",
-    "require": {
+    "name": "rtCamp/pwa-extension",
+    "require-dev": {
         "wpackagist-plugin/pwa": "*"
     },
     "repositories": [
