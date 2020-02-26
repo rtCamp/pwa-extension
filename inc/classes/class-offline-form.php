@@ -17,7 +17,9 @@ class Offline_Form {
 	use Singleton;
 
 	/**
-	 * @var array of error messages.
+	 * Array of error messages.
+	 *
+	 * @var array
 	 */
 	private $error_messages;
 
@@ -27,9 +29,9 @@ class Offline_Form {
 	protected function __construct() {
 
 		$this->error_messages = array(
-			'serverOffline' => esc_html__( 'The server appears to be down. Please try again later.', 'pwa-extension' ),
-			'error'         => esc_html__( 'Something prevented the page from being rendered. Please try again.', 'pwa-extension' ),
-			'form'          => esc_html__( 'Your form will be submitted once you are back online!', 'pwa-extension' ),
+			'serverOffline' => esc_html__( 'The server appears to be down. Please try again later.', 'rt-pwa-extensions' ),
+			'error'         => esc_html__( 'Something prevented the page from being rendered. Please try again.', 'rt-pwa-extensions' ),
+			'form'          => esc_html__( 'Your form will be submitted once you are back online!', 'rt-pwa-extensions' ),
 		);
 
 		$this->setup_hooks();
@@ -50,7 +52,7 @@ class Offline_Form {
 	/**
 	 * Register service worker script for offline form submit.
 	 *
-	 * @param $scripts
+	 * @param Object $scripts scripts object.
 	 */
 	public function offline_form_service_worker( $scripts ) {
 
