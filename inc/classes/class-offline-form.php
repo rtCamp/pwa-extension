@@ -45,7 +45,7 @@ class Offline_Form {
 	 */
 	protected function setup_hooks() {
 
-		add_action( 'wp_front_service_worker', array( $this, 'offline_form_service_worker' ), 11 );
+		add_action( 'wp_front_service_worker', array( $this, 'offline_form_service_worker' ), 10 );
 
 	}
 
