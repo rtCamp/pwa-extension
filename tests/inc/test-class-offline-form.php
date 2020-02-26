@@ -55,7 +55,7 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 			[
 				'type'     => 'filter',
 				'name'     => 'wp_front_service_worker',
-				'priority' => 11,
+				'priority' => 10,
 				'listener' => 'offline_form_service_worker',
 			],
 		];
