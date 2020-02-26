@@ -16,7 +16,9 @@ class Admin_Settings {
 	use Singleton;
 
 	/**
-	 * @var string settings page slug.
+	 * Setting page slug.
+	 *
+	 * @var string
 	 */
 	private $page_slug = 'pwa_extension';
 
@@ -35,20 +37,20 @@ class Admin_Settings {
 	public function register_plugin_settings() {
 		$args = array(
 			'type'              => 'string',
-			'description'       => __( 'Form routes for offline form submission.', 'pwa-extension' ),
+			'description'       => __( 'Form routes for offline form submission.', 'rt-pwa-extensions' ),
 			'sanitize_callback' => array( $this, 'validate_setting' ),
 		);
 
 		register_setting( $this->page_slug, 'rt_pwa_extension_options', $args );
-		add_settings_section( 'pwa-extension-setting-options', __( 'Form Routes Options', 'pwa-extension' ), array( $this, 'callback_pwa_setting_section' ), 'options-general.php' );
-		add_settings_field( 'pwa-extension-routes-input', __( 'Form Routes', 'pwa-extension' ), array( $this, 'callback_url_input' ), 'options-general.php', 'pwa-extension-setting-options' );
+		add_settings_section( 'pwa-extension-setting-options', __( 'Form Routes Options', 'rt-pwa-extensions' ), array( $this, 'callback_pwa_setting_section' ), 'options-general.php' );
+		add_settings_field( 'pwa-extension-routes-input', __( 'Form Routes', 'rt-pwa-extensions' ), array( $this, 'callback_url_input' ), 'options-general.php', 'pwa-extension-setting-options' );
 	}
 
 	/**
 	 * Setting section callback.
 	 */
 	public function callback_pwa_setting_section() {
-		esc_html_e( 'Add your form routes for offline form submission.', 'pwa-extension' );
+		esc_html_e( 'Add your form routes for offline form submission.', 'rt-pwa-extensions' );
 	}
 
 	/**
@@ -57,14 +59,14 @@ class Admin_Settings {
 	public function callback_url_input() {
 		$value = get_option( 'rt_pwa_extension_options' );
 		printf( '<textarea name="rt_pwa_extension_options" rows="5">%1$s</textarea>', esc_textarea( $value ) );
-		printf( '<p><i>%1$s</i></p>', esc_html__( 'Add multiple routes in separate new line.', 'pwa-extension' ) );
+		printf( '<p><i>%1$s</i></p>', esc_html__( 'Add multiple routes in separate new line.', 'rt-pwa-extensions' ) );
 	}
 
 	/**
 	 * Register plugin option page.
 	 */
 	public function register_options_page() {
-		add_options_page( __( 'PWA Extension Settings', 'pwa-extension' ), __( 'PWA Extension Settings', 'pwa-extension' ), 'manage_options', $this->page_slug, array( $this, 'options_page' ) );
+		add_options_page( __( 'PWA Extension Settings', 'rt-pwa-extensions' ), __( 'PWA Extension Settings', 'rt-pwa-extensions' ), 'manage_options', $this->page_slug, array( $this, 'options_page' ) );
 	}
 
 	/**
@@ -74,12 +76,12 @@ class Admin_Settings {
 
 		// User Require Capability to edit page.
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'pwa-extension' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'rt-pwa-extensions' ) );
 		}
 
 		?>
 		<div>
-			<h1><?php esc_html_e( 'PWA Extension Settings', 'pwa-extension' ); ?></h1>
+			<h1><?php esc_html_e( 'PWA Extension Settings', 'rt-pwa-extensions' ); ?></h1>
 			<form method="post" action="options.php">
 				<?php
 				settings_fields( $this->page_slug );
@@ -94,9 +96,9 @@ class Admin_Settings {
 	/**
 	 * Validate setting input.
 	 *
-	 * @param $input string
+	 * @param string $input input string.
 	 *
-	 * @return array.
+	 * @return string.
 	 */
 	public function validate_setting( $input ) {
 
@@ -105,7 +107,7 @@ class Admin_Settings {
 		// Set error message when invalid.
 		if ( $validated !== $input ) {
 			$type    = 'error';
-			$message = __( 'Invalid \'Form Route\'. Please enter valid form routes.', 'pwa-extension' );
+			$message = __( 'Invalid \'Form Route\'. Please enter valid form routes.', 'rt-pwa-extensions' );
 			add_settings_error(
 				'rt_pwa_extension_options',
 				'pwa-extension-invalid-route',
@@ -129,7 +131,7 @@ class Admin_Settings {
 				add_settings_error(
 					'rt_pwa_extension_options',
 					'pwa-extension-white-space-not-allowed',
-					__( 'White space are not allowed in \'Form Routes\'.', 'pwa-extension' ),
+					__( 'White space are not allowed in \'Form Routes\'.', 'rt-pwa-extensions' ),
 					'error'
 				);
 			}
