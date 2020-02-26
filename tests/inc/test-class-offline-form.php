@@ -45,9 +45,9 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 
 		$error_messages = Utility::get_property( $this->_instance, 'error_messages' );
 		$expected_data  = [
-			'serverOffline' => esc_html__( 'The server appears to be down. Please try again later.', 'pwa-extension' ),
-			'error'         => esc_html__( 'Something prevented the page from being rendered. Please try again.', 'pwa-extension' ),
-			'form'          => esc_html__( 'Your form will be submitted once you are back online!', 'pwa-extension' ),
+			'serverOffline' => esc_html__( 'The server appears to be down. Please try again later.', 'rt-pwa-extensions' ),
+			'error'         => esc_html__( 'Something prevented the page from being rendered. Please try again.', 'rt-pwa-extensions' ),
+			'form'          => esc_html__( 'Your form will be submitted once you are back online!', 'rt-pwa-extensions' ),
 		];
 		$this->assertEquals( $expected_data, $error_messages );
 
