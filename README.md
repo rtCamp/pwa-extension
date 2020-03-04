@@ -75,7 +75,7 @@ Once you're ready to send a pull request, please run through the following check
 
 ### v1.0.3 (4-02-2020)
 
-- Add support for gravity form offline support.
+- Add support for gravity form offline submission.
 
 ### v1.0.2 (24-12-2019)
 
