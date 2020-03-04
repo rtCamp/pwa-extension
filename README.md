@@ -73,6 +73,11 @@ Once you're ready to send a pull request, please run through the following check
 
 ## Change Log
 
+### v1.0.3 (4-02-2020)
+
+- Add support for gravity form offline support.
+- Add unit test cases for the plugin.
+
 ### v1.0.2 (24-12-2019)
 
 - Restructure plugin.
