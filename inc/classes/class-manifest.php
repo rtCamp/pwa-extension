@@ -45,6 +45,15 @@ class Manifest {
 			$filter_name = sprintf( 'rt_pwa_extensions_app_icon_%1$s_%1$s', $icon_size );
 
 			$manifest['icons'][] = array(
+				/**
+				 * Filters web app manifest icon url.
+				 *
+				 * The Dynamic portion of the hook refers to height and width of the image.
+				 *
+				 * @since 1.0.3
+				 *
+				 * @param string $img_url Icon URL.
+				 */
 				'src'   => apply_filters( $filter_name, $img_url ),
 				'sizes' => sprintf( '%1$sx%1$s', $icon_size ),
 			);
