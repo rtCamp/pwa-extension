@@ -28,6 +28,8 @@ class Plugin {
 
 		Manifest::get_instance();
 		Service_Worker::get_instance();
+		Offline_Form::get_instance();
+		Admin_Settings::get_instance();
 
 		// Other plugins integration.
 		Izooto::get_instance();
