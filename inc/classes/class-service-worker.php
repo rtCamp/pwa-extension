@@ -33,7 +33,6 @@ class Service_Worker {
 
 		add_action( 'wp_front_service_worker', array( $this, 'cache_images' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'cache_theme_assets' ) );
-		add_action( 'wp_front_service_worker', array( $this, 'cache_gutenberg_assets' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'precache_latest_blog_posts' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'precache_menu' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'enable_offline_google_analytics' ) );
@@ -116,13 +115,9 @@ class Service_Worker {
 			preg_quote( trailingslashit( get_template_directory_uri() ), '/' ),
 		);
 
-		// @codeCoverageIgnoreStart
-		// Ignoring because not able to mock this condition.
 		if ( get_template() !== get_stylesheet() ) {
 			$theme_directory_uri_patterns[] = preg_quote( trailingslashit( get_stylesheet_directory_uri() ), '/' );
 		}
-		// @codeCoverageIgnoreEnd
-
 
 		$scripts->caching_routes()->register(
 			'^(' . implode( '|', $theme_directory_uri_patterns ) . ').*',
@@ -137,39 +132,6 @@ class Service_Worker {
 			)
 		);
 
-	}
-
-	/**
-	 * Cache Gutenberg block-library assets with runtime network-first caching strategy.
-	 *
-	 * @see https://gist.github.com/westonruter/1a63d052beb579842461f6ad837715fb#file-basic-site-caching-php-L43-L67
-	 *
-	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
-	 *
-	 * @return void
-	 */
-	public function cache_gutenberg_assets( \WP_Service_Worker_Scripts $scripts ) {
-
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-		if ( is_plugin_active( 'gutenberg/gutenberg.php' ) ) {
-			$block_library_path = '/wp-content/plugins/gutenberg/.*\.(?:css|js)(\?.*)?$';
-		} else {
-			$block_library_path = '/wp-includes/css/dist/block-library/.*\.(?:css|js)(\?.*)?$';
-		}
-
-		$scripts->caching_routes()->register(
-			$block_library_path,
-			array(
-				'strategy'  => \WP_Service_Worker_Caching_Routes::STRATEGY_NETWORK_FIRST,
-				'cacheName' => 'block-library-assets',
-				'plugins'   => array(
-					'expiration' => array(
-						'maxEntries' => 25, // Limit the cached entries to the number of files loaded over network, e.g. JS, CSS, and PNG.
-					),
-				),
-			)
-		);
 	}
 
 
@@ -310,7 +272,9 @@ class Service_Worker {
 		$scripts->register(
 			'offline-google-analytics',
 			array(
-				'src' => sprintf( '%s/assets/js/offline-analytics.js', untrailingslashit( RT_PWA_EXTENSIONS_URL ) ),
+				'src' => function() {
+					return 'workbox.googleAnalytics.initialize();';
+				},
 			)
 		);
 

@@ -13,8 +13,8 @@
 	<!-- Check up to 8 files simultanously. -->
 	<arg name="parallel" value="8"/>
 
-	<!-- Check PHP files. -->
-	<arg name="extensions" value="php"/>
+	<!-- Check PHP and JS files. -->
+	<arg name="extensions" value="php,js"/>
 
 	<!-- Check all files in this directory and the directories below it. -->
 	<file>.</file>
@@ -23,7 +23,6 @@
 	<exclude-pattern>*/languages/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
-	<exclude-pattern>/tests/*</exclude-pattern>
 
 	<!-- Include the WordPress standard. -->
 	<rule ref="WordPress" />
