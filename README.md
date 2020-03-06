@@ -33,7 +33,25 @@ e.g Enable offline form submission with following settings for the forms availab
 /contact
 /feedback
 ```
- 
+
+## Steps to setup add to home screen for your site.
+
+- Add app icon images of all sizes in your WordPress theme assets folder with `your-theme/assets/img/icon-{width x height}.png` path
+- The valid size of the images can be 72x72, 96x96, 128x128, 144x144, 152x152, 192x192, 384x384, 512x512.
+- Example image file name `icon-192x192.png`.
+- The path of the icons can be changed with `rt_pwa_extensions_app_icon_{height}_{width}` filter
+- Example snippet to change icon src.
+```php
+add_filter( 'rt_pwa_extensions_app_icon_72_72', 'update_icon_src' );
+/**
+ * Updates icon src.
+ *
+ * @return string
+ */
+function update_icon_src() {
+	return 'www.example.com/new-image.png';
+}
+```
 
 ## Integration with izooto plugin.
 
@@ -76,6 +94,7 @@ Once you're ready to send a pull request, please run through the following check
 ### v1.0.3 (4-02-2020)
 
 - Add support for gravity form offline submission.
+- Add `rt_pwa_extensions_app_icon_{height}_{width}` filter to change app icon path.
 
 ### v1.0.2 (24-12-2019)
 
