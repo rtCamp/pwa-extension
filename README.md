@@ -42,7 +42,7 @@ e.g Enable offline form submission with following settings for the forms availab
 - The path of the icons can be changed with `rt_pwa_extensions_app_icon_{height}_{width}` filter
 - Example snippet to change icon src.
 ```php
-add_filter( 'rt_pwa_extensions_app_icon_72_72', 'update_icon_path' );
+add_filter( 'rt_pwa_extensions_app_icon_72_72', 'update_icon_src' );
 /**
  * Updates icon src.
  *
