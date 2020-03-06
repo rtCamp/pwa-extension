@@ -4,7 +4,7 @@
  * Description: Enabling PWA features like offline caching etc. (requires pwa plugin activated.)
  * Author: rtCamp, chandrapatel, pradeep910
  * Author URI: https://rtcamp.com/?utm_source=rt-pwa-extensions-plugin
- * Version: 1.0.3
+ * Version: 1.0.2
  *
  * @package rt-pwa-extensions
  */
