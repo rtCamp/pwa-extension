@@ -47,7 +47,6 @@ class Izooto {
 	 * @return void
 	 */
 	public function register_izooto_service_worker_script( $scripts ) {
-
 		$scripts->register(
 			'izooto-workers',
 			array(
@@ -59,7 +58,7 @@ class Izooto {
 					$opfunction = $obj->iz_get_option( 'izooto-settings' );
 
 					// Bail out if izooto not configured correctly.
-					if ( empty( $opfunction ) ) {
+					if ( empty( $opfunction['sw'] ) ) {
 						return;
 					}
 
