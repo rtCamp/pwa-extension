@@ -18,7 +18,7 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 
 ## Requirements
 
-- The Official [PWA](https://wordpress.org/plugins/pwa/) Plugin
+- The Official [PWA](https://wordpress.org/plugins/pwa/) Plugin ( Push notifications are dependent on [iZooto](https://wordpress.org/plugins/izooto-web-push/) plugin )
 
 ## Features
 
