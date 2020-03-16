@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: rt PWA Extensions
- * Description: Enabling PWA features like offline caching etc. (requires pwa plugin activated.)
- * Author: rtCamp, chandrapatel, pradeep910
+ * Description: Enabling PWA features like offline caching etc. (requires <a href="https://wordpress.org/plugins/pwa/">PWA</a> plugin activated.)
+ * Author: rtCamp
  * Author URI: https://rtcamp.com/?utm_source=rt-pwa-extensions-plugin
  * Version: 1.0.3
  *
