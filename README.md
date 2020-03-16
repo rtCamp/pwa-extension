@@ -37,6 +37,7 @@ e.g Enable offline form submission with following settings for the forms availab
 
 ## Integration with izooto plugin.
 
+- The [iZooto](https://wordpress.org/plugins/izooto-web-push/) plugin must be installed and activated to use the izooto notification services.
 - Registers izooto service worker using `wp_front_service_worker` hook to main service worker file
 - Removes Service worker code of izooto from `?izooto=sw` to prevent conflicting it with main service worker.
 
@@ -44,6 +45,7 @@ e.g Enable offline form submission with following settings for the forms availab
 - [Chandra Patel](https://github.com/chandrapatel/)
 - [Pradeep Sonawane](https://github.com/pradeep910/)
 - [Sagar Nasit](https://github.com/sagarnasit/)
+- [Deepak Lalwani](https://github.com/deepaklalwani97/)
 
 ## Contribute
 
