@@ -56,13 +56,17 @@ class Offline_Form {
 	 */
 	public function offline_form_service_worker( $scripts ) {
 
-		$scripts->register(
-			'offline-form-submit', // Handle.
-			array(
-				'src'  => array( $this, 'get_offline_form_script' ),
-				'deps' => array(), // Dependency.
-			)
-		);
+		$offline_form_sw_script = $this->get_offline_form_script();
+
+		if ( false !== $offline_form_sw_script ) {
+			$scripts->register(
+				'offline-form-submit', // Handle.
+				array(
+					'src'  => array( $this, 'get_offline_form_script' ),
+					'deps' => array(), // Dependency.
+				)
+			);
+		}
 
 	}
 
@@ -76,6 +80,12 @@ class Offline_Form {
 		$sw_script = preg_replace( '#/\*\s*global.+?\*/#', '', $sw_script );
 
 		$form_routes_regex = $this->get_form_urls();
+
+		// Bail out if offline form routes are not set.
+		if ( false === $form_routes_regex ) {
+			return false;
+		}
+
 		// Replace with error messages | offline template url |error template url | form routes.
 		$sw_script = str_replace(
 			array(
@@ -105,9 +115,8 @@ class Offline_Form {
 		$string      = '';
 		$form_routes = get_option( 'rt_pwa_extension_options' );
 		if ( empty( $form_routes ) || ctype_space( $form_routes ) ) {
-			// Generate random string if no URLs specified.
-			// Random string ensures that no URL match.
-			$string = wp_generate_password( '30', false, false );
+			// Return false if no offline form routes are set.
+			$string = false;
 		} else {
 			$routes = explode( PHP_EOL, $form_routes );
 			// Create regex string like ( '/contact|/form|/gravity-form' ).
