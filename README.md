@@ -29,7 +29,6 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 - Submit gravity form even if you are offline. The plugin will send form response once you get back online.
 - The offline form submission will only work for the routes added to the plugin settings page.
 - If no routes are set the offline form submission script will not be enqueued.
-- Add form routes to enable offline form submission in the plugin settings page.
 e.g Enable offline form submission with following settings for the forms available on routes `example.com/contact` and `example.com/feedback`
 ```
 /contact

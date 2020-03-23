@@ -62,7 +62,9 @@ class Offline_Form {
 			$scripts->register(
 				'offline-form-submit', // Handle.
 				array(
-					'src'  => array( $this, 'get_offline_form_script' ),
+					'src'  => function() use ( $offline_form_sw_script ) {
+						return $offline_form_sw_script;
+					},
 					'deps' => array(), // Dependency.
 				)
 			);
