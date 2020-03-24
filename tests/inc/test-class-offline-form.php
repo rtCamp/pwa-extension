@@ -74,9 +74,18 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 	 */
 	public function test_offline_form_service_worker() {
 
-		$this->_instance->offline_form_service_worker( $this->scripts );
+		$old_option = get_option( 'rt_pwa_extension_options' );
 
+		$this->_instance->offline_form_service_worker( $this->scripts );
+		$this->assertArrayNotHasKey( 'offline-form-submit', $this->scripts->registered );
+
+		$option = 'test1' . PHP_EOL . 'test2' . PHP_EOL . 'test3';
+		update_option( 'rt_pwa_extension_options', $option );
+
+		$this->_instance->offline_form_service_worker( $this->scripts );
 		$this->assertArrayHasKey( 'offline-form-submit', $this->scripts->registered );
+
+		update_option( 'rt_pwa_extension_options', $old_option );
 	}
 
 	/**
@@ -85,7 +94,7 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 	public function test_get_form_urls() {
 
 		// Testing Empty Routes
-		$this->assertNotEmpty( Utility::invoke_method( $this->_instance, 'get_form_urls' ) );
+		$this->assertFalse( Utility::invoke_method( $this->_instance, 'get_form_urls' ) );
 
 		// Testing else condition
 		$option = 'test1 abc' . PHP_EOL . 'test2' . PHP_EOL . ' ' . PHP_EOL . 'test3';
@@ -100,18 +109,23 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 	 * @covers ::get_offline_form_script
 	 */
 	public function test_get_offline_form_script() {
+		$old_option = get_option( 'rt_pwa_extension_options' );
+
 		$expected_offline_url = home_url( '/' ) . '?wp_error_template=offline';
 		$expected_500_url     = home_url( '/' ) . '?wp_error_template=500';
 
-		$this->assertContains( $expected_offline_url, $this->_instance->get_offline_form_script() );
-		$this->assertContains( $expected_500_url, $this->_instance->get_offline_form_script() );
+		$this->assertFalse( $this->_instance->get_offline_form_script() );
 
 		$expected_form_routes = 'test1|test2|test3';
 
 		$option = 'test1' . PHP_EOL . 'test2' . PHP_EOL . 'test3';
 		update_option( 'rt_pwa_extension_options', $option );
 
+		$this->assertContains( $expected_offline_url, $this->_instance->get_offline_form_script() );
+		$this->assertContains( $expected_500_url, $this->_instance->get_offline_form_script() );
 		$this->assertContains( $expected_form_routes, $this->_instance->get_offline_form_script() );
+
+		update_option( 'rt_pwa_extension_options', $old_option );
 
 	}
 

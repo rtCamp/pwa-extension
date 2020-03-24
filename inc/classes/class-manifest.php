@@ -38,6 +38,8 @@ class Manifest {
 			return $manifest;
 		}
 
+		$manifest['short_name'] = $manifest['name'];
+
 		$icon_sizes = array( '72', '96', '128', '144', '152', '192', '384', '512' );
 
 		foreach ( $icon_sizes as $icon_size ) {

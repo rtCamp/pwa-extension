@@ -44,6 +44,7 @@ class Test_Manifest extends \WP_UnitTestCase {
 	public function test_filter_web_app_manifest() {
 
 		// Empty manifest.
+
 		$this->assertEmpty( $this->_instance->filter_web_app_manifest( '' ) );
 
 		$icon_sizes = [ '72', '96', '128', '144', '152', '192', '384', '512' ];
@@ -57,13 +58,16 @@ class Test_Manifest extends \WP_UnitTestCase {
 
 		}
 		$expected_data = [
-			'test_key' => 'test_value',
-			'icons'    => $icons,
-			'display'  => 'standalone',
+			'test_key'   => 'test_value',
+			'icons'      => $icons,
+			'display'    => 'standalone',
+			'name' => 'test site',
+			'short_name' => 'test site',
 		];
 
 		$arg = [
 			'test_key' => 'test_value',
+			'name'     => 'test site',
 		];
 
 		$this->assertEquals( $expected_data, $this->_instance->filter_web_app_manifest( $arg ) );
