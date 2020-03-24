@@ -18,7 +18,7 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 
 ## Requirements
 
-- The Official [PWA](https://wordpress.org/plugins/pwa/) Plugin
+- The Official [PWA](https://wordpress.org/plugins/pwa/) Plugin ( Push notifications are dependent on [iZooto](https://wordpress.org/plugins/izooto-web-push/) plugin )
 
 ## Features
 
@@ -55,6 +55,7 @@ function update_icon_src() {
 
 ## Integration with izooto plugin.
 
+- The [iZooto](https://wordpress.org/plugins/izooto-web-push/) plugin must be installed and activated to use the izooto notification services.
 - Registers izooto service worker using `wp_front_service_worker` hook to main service worker file
 - Removes Service worker code of izooto from `?izooto=sw` to prevent conflicting it with main service worker.
 
@@ -62,6 +63,7 @@ function update_icon_src() {
 - [Chandra Patel](https://github.com/chandrapatel/)
 - [Pradeep Sonawane](https://github.com/pradeep910/)
 - [Sagar Nasit](https://github.com/sagarnasit/)
+- [Deepak Lalwani](https://github.com/deepaklalwani97/)
 
 ## Contribute
 
