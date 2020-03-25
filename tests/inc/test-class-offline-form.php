@@ -12,6 +12,7 @@ use RT\PWA\Inc\Offline_Form;
 class Test_Offline_Form extends \WP_UnitTestCase {
 
 	/**
+	 * `Offline_Form` class instance.
 	 *
 	 * @var \RT\PWA\Inc\Offline_Form
 	 */
@@ -19,6 +20,8 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 
 	/**
 	 * This function set the instance for class Offline_Form.
+	 *
+	 * @return void
 	 */
 	public function setUp(): void {
 
@@ -36,8 +39,12 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests class construct.
+	 *
 	 * @covers ::__construct
 	 * @covers ::setup_hooks
+	 *
+	 * @return void
 	 */
 	public function test_construct() {
 
@@ -70,7 +77,11 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `offline_form_service_worker` function.
+	 * 
 	 * @covers ::offline_form_service_worker
+	 *
+	 * @return void
 	 */
 	public function test_offline_form_service_worker() {
 
@@ -89,7 +100,11 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `get_form_urls` function.
+	 *
 	 * @covers ::get_form_urls
+	 *
+	 * @return void
 	 */
 	public function test_get_form_urls() {
 
@@ -106,7 +121,11 @@ class Test_Offline_Form extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `get_offline_form_script` function.
+	 *
 	 * @covers ::get_offline_form_script
+	 *
+	 * @return void
 	 */
 	public function test_get_offline_form_script() {
 		$old_option = get_option( 'rt_pwa_extension_options' );

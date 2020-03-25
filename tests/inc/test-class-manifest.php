@@ -13,6 +13,7 @@ use RT\PWA\Inc\Manifest;
 class Test_Manifest extends \WP_UnitTestCase {
 
 	/**
+	 * `Manifest` class instance
 	 *
 	 * @var \RT\PWA\Inc\Manifest
 	 */
@@ -28,7 +29,11 @@ class Test_Manifest extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests class construct.
+	 *
 	 * @covers ::__construct
+	 *
+	 * @return void
 	 */
 	public function test_construct() {
 
@@ -39,7 +44,11 @@ class Test_Manifest extends \WP_UnitTestCase {
 
 
 	/**
+	 * Tests `filter_web_app_manifest` function.
+	 *
 	 * @covers ::filter_web_app_manifest()
+	 *
+	 * @return void
 	 */
 	public function test_filter_web_app_manifest() {
 

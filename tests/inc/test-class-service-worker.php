@@ -12,13 +12,16 @@ use RT\PWA\Inc\Service_Worker;
 class Test_Service_Worker extends \WP_UnitTestCase {
 
 	/**
+	 * `Service_Worker` class instance.
 	 *
 	 * @var \RT\PWA\Inc\Service_Worker
 	 */
 	protected $_instance = false;
 
 	/**
-	 * This function set the instance for class Service_Worker
+	 * This function set the instance for class Service_Worker.
+	 *
+	 * @return void
 	 */
 	public function setUp(): void {
 
@@ -38,7 +41,11 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests class construct.
+	 *
 	 * @covers ::__construct
+	 *
+	 * @return void
 	 */
 	public function test_construct() {
 
@@ -108,14 +115,22 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `filter_wp_service_worker_navigation_caching_strategy` function.
+	 *
 	 * @covers ::filter_wp_service_worker_navigation_caching_strategy
+	 *
+	 * @return void
 	 */
 	public function test_filter_wp_service_worker_navigation_caching_strategy() {
 		$this->assertEquals( 'NetworkFirst', $this->_instance->filter_wp_service_worker_navigation_caching_strategy( '' ) );
 	}
 
 	/**
+	 * Tests `filter_wp_service_worker_navigation_caching_strategy_args` function.
+	 *
 	 * @covers ::filter_wp_service_worker_navigation_caching_strategy_args
+	 *
+	 * @return void
 	 */
 	public function test_filter_wp_service_worker_navigation_caching_strategy_args() {
 
@@ -135,7 +150,11 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `enable_offline_google_analytics` function.
+	 *
 	 * @covers ::enable_offline_google_analytics
+	 *
+	 * @return void
 	 */
 	public function test_enable_offline_google_analytics() {
 
@@ -147,7 +166,11 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 
 
 	/**
+	 * Tests `cache_images` function.
+	 *
 	 * @covers ::cache_images
+	 *
+	 * @return void
 	 */
 	public function test_cache_images() {
 		$this->_instance->cache_images( $this->scripts );
@@ -160,7 +183,11 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `cache_theme_assets` function.
+	 *
 	 * @covers ::cache_theme_assets
+	 *
+	 * @return void
 	 */
 	public function test_cache_theme_assets() {
 		$theme_directory_uri_patterns = array(
@@ -180,7 +207,11 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `cache_gutenberg_assets` function.
+	 *
 	 * @covers ::cache_gutenberg_assets
+	 *
+	 * @return void
 	 */
 	public function test_cache_gutenberg_assets() {
 
@@ -198,7 +229,11 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `cache_gutenberg_assets` function.
+	 *
 	 * @covers ::cache_gutenberg_assets
+	 *
+	 * @return void
 	 */
 	public function test_cache_gutenberg_assets_plugin() {
 		// Test for gutenberg plugin assets
@@ -224,7 +259,11 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `precache_latest_blog_posts` function.
+	 *
 	 * @covers ::precache_latest_blog_posts
+	 *
+	 * @return void
 	 */
 	public function test_precache_latest_blog_posts() {
 
@@ -258,7 +297,14 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 		$this->assertEquals( $expected_data, $routes );
 
 	}
-
+	
+	/**
+	 * Tests `precache_menu` function.
+	 *
+	 * @covers ::precache_menu
+	 *
+	 * @return void
+	 */
 	public function test_precache_menu() {
 
 		wp_cache_delete( 'rt_pwa_extensions_precache_menu_links' );
@@ -298,6 +344,15 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 
 	}
 
+	/**
+	 * Updates nav menu items.
+	 * 
+	 * Helper function to test offline menu cache.
+	 *
+	 * @param int $menu_id Menu ID.
+	 *
+	 * @return void
+	 */
 	public function _set_menu_data( $menu_id ) {
 
 		wp_update_nav_menu_item(

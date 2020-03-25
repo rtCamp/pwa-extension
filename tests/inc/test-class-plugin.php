@@ -12,6 +12,7 @@ use RT\PWA\Inc\Plugin;
 class Test_Plugin extends \WP_UnitTestCase {
 
 	/**
+	 * `Plugin` class instance.
 	 *
 	 * @var \RT\PWA\Inc\Plugin
 	 */
@@ -27,8 +28,12 @@ class Test_Plugin extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests class construct.
+	 *
 	 * @covers ::__construct
 	 * @covers ::setup_hooks
+	 *
+	 * @return void
 	 */
 	public function test_construct() {
 
@@ -40,7 +45,11 @@ class Test_Plugin extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `add_pwa_compat_library` function
+	 * 
 	 * @covers ::add_pwa_compat_library
+	 *
+	 * @return void
 	 */
 	public function test_add_pwa_compat_library() {
 		$output = Utility::buffer_and_return( [ $this->_instance, 'add_pwa_compat_library' ] );
@@ -48,6 +57,13 @@ class Test_Plugin extends \WP_UnitTestCase {
 		$this->assertContains( 'https://cdn.jsdelivr.net/npm/pwacompat@2.0.6/pwacompat.min.js', $output );
 	}
 
+	/**
+	 * Tests `filter_wp_headers` function
+	 *
+	 * @covers ::filter_wp_headers
+	 *
+	 * @return void
+	 */
 	public function test_filter_wp_headers() {
 
 		// Assert Non array argument
