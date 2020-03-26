@@ -62,8 +62,9 @@ class Offline_Form {
 			$scripts->register(
 				'offline-form-submit', // Handle.
 				array(
+					// Ignored because cannot test statement inside anonymous function.
 					'src'  => function() use ( $offline_form_sw_script ) {
-						return $offline_form_sw_script;
+						return $offline_form_sw_script; // @codeCoverageIgnore
 					},
 					'deps' => array(), // Dependency.
 				)

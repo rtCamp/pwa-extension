@@ -12,6 +12,7 @@ use RT\PWA\Inc\Admin_Settings;
 class Test_Admin_Settings extends \WP_UnitTestCase {
 
 	/**
+	 * `Admin_Settings` class instance.
 	 *
 	 * @var \RT\PWA\Inc\Admin_Settings
 	 */
@@ -27,7 +28,11 @@ class Test_Admin_Settings extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests class construct.
+	 *
 	 * @covers ::__construct
+	 * 
+	 * @return void
 	 */
 	public function test_construct() {
 
@@ -58,7 +63,11 @@ class Test_Admin_Settings extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Setting section callback.
+	 * Tests `callback_pwa_setting_section` function.
+	 *
+	 * @covers ::callback_pwa_setting_section
+	 * 
+	 * @return void
 	 */
 	public function test_callback_pwa_setting_section() {
 
@@ -68,7 +77,11 @@ class Test_Admin_Settings extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `register_options_page` function.
+	 *
 	 * @covers ::register_options_page()
+	 *
+	 * @return void
 	 */
 	public function test_register_options_page() {
 		$current_user = get_current_user_id();
@@ -89,6 +102,8 @@ class Test_Admin_Settings extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `register_plugin_settings` function.
+	 *
 	 * @covers ::register_plugin_settings
 	 *
 	 * @return void
@@ -130,7 +145,11 @@ class Test_Admin_Settings extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `options_page` function.
+	 *
 	 * @covers ::options_page
+	 *
+	 * @return void
 	 */
 	public function test_options_page() {
 
@@ -146,7 +165,11 @@ class Test_Admin_Settings extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `callback_url_input` function.
+	 *
 	 * @covers ::callback_url_input
+	 *
+	 * @return void
 	 */
 	public function test_callback_url_input() {
 
@@ -161,7 +184,11 @@ class Test_Admin_Settings extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests `validate_setting` function.
+	 *
 	 * @covers ::validate_setting
+	 *
+	 * @return void
 	 */
 	public function test_validate_setting() {
 
