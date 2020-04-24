@@ -19,10 +19,12 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 ## Requirements
 
 - The Official [PWA](https://wordpress.org/plugins/pwa/) Plugin
+- Generate the PWA Icons from [this site](https://app-manifest.firebaseapp.com/) and put the icons in theme's `/assets/img/` directory.
+  Example path for 512x512 size will be <your-theme>`/assets/img/icon-512x512.png`
 
 ## Features
 
-- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme//assets/img/icon-{width x height}.png'`.
+- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme/assets/img/icon-{width}x{height}.png`.
 - Offline reading by caching assets and pages.
 
 ## Integration with izooto plugin.
