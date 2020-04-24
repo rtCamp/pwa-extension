@@ -6,7 +6,7 @@
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to homescreen` and `offline reading` features of PWA.
+An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable/activate `add to homescreen` and `offline reading` features of PWA.
 
 **Author:** [rtCamp](https://github.com/rtCamp/)
 
@@ -17,12 +17,12 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable `add to home
 **Requires PHP:** 5.4+
 
 ## Requirements
-
-- The Official [PWA](https://wordpress.org/plugins/pwa/) Plugin ( Push notifications are dependent on [iZooto](https://wordpress.org/plugins/izooto-web-push/) plugin )
-
+- The Official [PWA](https://wordpress.org/plugins/pwa/) Plugin.
+- Generate the PWA Icons and put the icons in theme's `/assets/img/` directory. _You can use [this site](https://app-manifest.firebaseapp.com/) to generate icons._ (Example path for 512x512 size will be <your-theme>/assets/img/icon-512x512.png)
+  
 ## Features
 
-- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme//assets/img/icon-{width x height}.png'`.
+- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme/assets/img/icon-{width}x{height}.png`.
 - Offline reading by caching assets and pages.
 
 ### Offline Form Submission.
@@ -37,11 +37,12 @@ e.g Enable offline form submission with following settings for the forms availab
 
 ## Steps to setup add to home screen for your site.
 
-- Add app icon images of all sizes in your WordPress theme assets folder with `your-theme/assets/img/icon-{width x height}.png` path
+- Add app icon images of all sizes in your WordPress theme assets folder with <your-theme>`/assets/img/icon-{width}x{height}.png` path
 - The valid size of the images can be 72x72, 96x96, 128x128, 144x144, 152x152, 192x192, 384x384, 512x512.
 - Example image file name `icon-192x192.png`.
 - The path of the icons can be changed with `rt_pwa_extensions_app_icon_{height}_{width}` filter
 - Example snippet to change icon src.
+
 ```php
 add_filter( 'rt_pwa_extensions_app_icon_72_72', 'update_icon_src' );
 /**
@@ -109,7 +110,7 @@ Once you're ready to send a pull request, please run through the following check
 
 ### v1.0.0 (12-09-2019)
 
-- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme//assets/img/icon-{width x height}.png'`.
+- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(<your-theme>/assets/img/icon-{width}x{height}.png'`.
 - Offline reading by caching assets and pages.
 
 ## Unit testing
