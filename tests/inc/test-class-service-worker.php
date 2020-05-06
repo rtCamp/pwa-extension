@@ -111,7 +111,6 @@ class Test_Service_Worker extends \WP_UnitTestCase {
 		}
 
 		$this->assertEquals( 10, has_filter( 'wp_service_worker_integrations_enabled', '__return_true' ) );
-		$this->assertEquals( 10, has_filter( 'wp_service_worker_navigation_preload', '__return_false' ) );
 	}
 
 	/**
