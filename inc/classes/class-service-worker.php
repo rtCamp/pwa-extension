@@ -210,6 +210,8 @@ class Service_Worker {
 
 		}
 
+		$recent_posts = apply_filters( 'rt_pwa_ext_precache_recent_posts', $recent_posts );
+
 		foreach ( $recent_posts as $recent_post_id ) {
 			$scripts->precaching_routes()->register(
 				get_permalink( $recent_post_id ),
@@ -286,6 +288,8 @@ class Service_Worker {
 			wp_cache_set( $cache_key, $menu_links, '', 10 * MINUTE_IN_SECONDS );
 
 		}
+
+		$menu_links = apply_filters( 'rt_pwa_ext_precache_menu_links', $menu_links );
 
 		foreach ( $menu_links as $menu_link ) {
 			$scripts->precaching_routes()->register(
