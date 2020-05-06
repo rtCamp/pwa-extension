@@ -24,9 +24,6 @@ class Service_Worker {
 		// Enable service worker integrations.
 		add_filter( 'wp_service_worker_integrations_enabled', '__return_true' );
 
-		// This is to opt-in to a caching strategy for navigation requests.
-		add_filter( 'wp_service_worker_navigation_preload', '__return_false' );
-
 		add_filter( 'wp_service_worker_navigation_caching_strategy', array( $this, 'filter_wp_service_worker_navigation_caching_strategy' ) );
 
 		add_filter( 'wp_service_worker_navigation_caching_strategy_args', array( $this, 'filter_wp_service_worker_navigation_caching_strategy_args' ) );
