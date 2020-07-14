@@ -58,6 +58,11 @@ class Izooto {
 					$obj = new \Init();
 					$opfunction = $obj->iz_get_option( 'izooto-settings' );
 
+					// Bail out if izooto not configured correctly.
+					if ( empty( $opfunction['sw'] ) ) {
+						return;
+					}
+
 					return sprintf( 'var izCacheVer = 1; importScripts("%1$s");', esc_url_raw( 'https://' . $opfunction['sw'] ) );
 				},
 			)

@@ -24,17 +24,13 @@ class Service_Worker {
 		// Enable service worker integrations.
 		add_filter( 'wp_service_worker_integrations_enabled', '__return_true' );
 
-		// This is to opt-in to a caching strategy for navigation requests.
-		add_filter( 'wp_service_worker_navigation_preload', '__return_false' );
-
 		add_filter( 'wp_service_worker_navigation_caching_strategy', array( $this, 'filter_wp_service_worker_navigation_caching_strategy' ) );
 
 		add_filter( 'wp_service_worker_navigation_caching_strategy_args', array( $this, 'filter_wp_service_worker_navigation_caching_strategy_args' ) );
 
 		add_action( 'wp_front_service_worker', array( $this, 'cache_images' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'cache_theme_assets' ) );
-		add_action( 'wp_front_service_worker', array( $this, 'precache_latest_blog_posts' ) );
-		add_action( 'wp_front_service_worker', array( $this, 'precache_menu' ) );
+		add_action( 'wp_front_service_worker', array( $this, 'cache_gutenberg_assets' ) );
 		add_action( 'wp_front_service_worker', array( $this, 'enable_offline_google_analytics' ) );
 
 	}
@@ -115,9 +111,13 @@ class Service_Worker {
 			preg_quote( trailingslashit( get_template_directory_uri() ), '/' ),
 		);
 
+		// @codeCoverageIgnoreStart
+		// Ignoring because not able to mock this condition.
 		if ( get_template() !== get_stylesheet() ) {
 			$theme_directory_uri_patterns[] = preg_quote( trailingslashit( get_stylesheet_directory_uri() ), '/' );
 		}
+		// @codeCoverageIgnoreEnd
+
 
 		$scripts->caching_routes()->register(
 			'^(' . implode( '|', $theme_directory_uri_patterns ) . ').*',
@@ -134,130 +134,37 @@ class Service_Worker {
 
 	}
 
-
 	/**
-	 * Pre-Cache latest blog posts
+	 * Cache Gutenberg block-library assets with runtime network-first caching strategy.
+	 *
+	 * @see https://gist.github.com/westonruter/1a63d052beb579842461f6ad837715fb#file-basic-site-caching-php-L43-L67
 	 *
 	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
 	 *
 	 * @return void
 	 */
-	public function precache_latest_blog_posts( \WP_Service_Worker_Scripts $scripts ) {
+	public function cache_gutenberg_assets( \WP_Service_Worker_Scripts $scripts ) {
 
-		$cache_key = 'rt_pwa_extensions_precache_latest_posts';
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-		$recent_posts = wp_cache_get( $cache_key );
-
-		if ( empty( $recent_posts ) ) {
-
-			$recent_posts = new \WP_Query(
-				array(
-					'post_type'              => 'post',
-					'post_status'            => 'publish',
-					'fields'                 => 'ids',
-					'posts_per_page'         => 10,
-					'no_found_rows'          => true,
-					'update_post_meta_cache' => false,
-					'update_post_term_cache' => false,
-				)
-			);
-
-			if ( empty( $recent_posts->posts ) || ! is_array( $recent_posts->posts ) ) {
-				return;
-			}
-
-			$recent_posts = $recent_posts->posts;
-
-			wp_cache_set( $cache_key, $recent_posts, '', 10 * MINUTE_IN_SECONDS );
-
+		if ( is_plugin_active( 'gutenberg/gutenberg.php' ) ) {
+			$block_library_path = '/wp-content/plugins/gutenberg/.*\.(?:css|js)(\?.*)?$';
+		} else {
+			$block_library_path = '/wp-includes/css/dist/block-library/.*\.(?:css|js)(\?.*)?$';
 		}
 
-		foreach ( $recent_posts as $recent_post_id ) {
-			$scripts->precaching_routes()->register(
-				get_permalink( $recent_post_id ),
-				array(
-					'revision' => get_bloginfo( 'version' ),
-				)
-			);
-		}
-
-	}
-
-	/**
-	 * Pre-Cache menu
-	 *
-	 * Only precache menu which assigned to any menu locations.
-	 *
-	 * @param \WP_Service_Worker_Scripts $scripts Instance to register service worker behavior with.
-	 *
-	 * @return void
-	 */
-	public function precache_menu( \WP_Service_Worker_Scripts $scripts ) {
-
-		$cache_key = 'rt_pwa_extensions_precache_menu_links';
-
-		$menu_links = wp_cache_get( $cache_key );
-
-		if ( empty( $menu_links ) ) {
-
-			// Get menu locations from source site.
-			$menu_locations = get_nav_menu_locations();
-
-			if ( empty( $menu_locations ) || ! is_array( $menu_locations ) ) {
-				return;
-			}
-
-			$menu_links = array();
-
-			foreach ( $menu_locations as $menu_location => $menu_id ) {
-
-				// If menu location does not have any menu assign then continue.
-				if ( empty( $menu_id ) ) {
-					continue;
-				}
-
-				$menu_items = wp_get_nav_menu_items( $menu_id );
-
-				foreach ( $menu_items as $menu_item ) {
-
-					// Don't precache external links.
-					if ( false === strpos( $menu_item->url, home_url() ) ) {
-						continue;
-					}
-
-					// Don't precache blog page.
-					if ( user_trailingslashit( $menu_item->url ) === get_post_type_archive_link( 'post' ) ) {
-						continue;
-					}
-
-					$menu_links[] = $menu_item->url;
-
-				}
-			}
-
-			if ( empty( $menu_links ) || ! is_array( $menu_links ) ) {
-				return;
-			}
-
-			// Filter out duplicate links.
-			$menu_links = array_unique( $menu_links );
-
-			// pre-cache only 10 menu links.
-			$menu_links = array_slice( $menu_links, 0, 10 );
-
-			wp_cache_set( $cache_key, $menu_links, '', 10 * MINUTE_IN_SECONDS );
-
-		}
-
-		foreach ( $menu_links as $menu_link ) {
-			$scripts->precaching_routes()->register(
-				$menu_link,
-				array(
-					'revision' => get_bloginfo( 'version' ),
-				)
-			);
-		}
-
+		$scripts->caching_routes()->register(
+			$block_library_path,
+			array(
+				'strategy'  => \WP_Service_Worker_Caching_Routes::STRATEGY_NETWORK_FIRST,
+				'cacheName' => 'block-library-assets',
+				'plugins'   => array(
+					'expiration' => array(
+						'maxEntries' => 25, // Limit the cached entries to the number of files loaded over network, e.g. JS, CSS, and PNG.
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -272,9 +179,7 @@ class Service_Worker {
 		$scripts->register(
 			'offline-google-analytics',
 			array(
-				'src' => function() {
-					return 'workbox.googleAnalytics.initialize();';
-				},
+				'src' => sprintf( '%s/assets/js/offline-analytics.js', untrailingslashit( RT_PWA_EXTENSIONS_URL ) ),
 			)
 		);
 
