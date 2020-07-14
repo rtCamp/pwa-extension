@@ -22,7 +22,7 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable/activate `ad
   
 ## Features
 
-- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme/assets/img/icon-{width}x{height}.png`.
+- `Add to Home Screen` popup for mobiles with custom icon setup in WP theme `(your-theme/assets/img/icon-{width}x{height}.png)`.
 - Offline reading by caching assets and pages.
 
 ### Offline Form Submission.
@@ -95,7 +95,7 @@ Once you're ready to send a pull request, please run through the following check
 
 ## Change Log
 
-### v1.0.3 (4-02-2020)
+### v1.0.3 (14-07-2020)
 
 - Add support for gravity form offline submission.
 - Add `rt_pwa_extensions_app_icon_{height}_{width}` filter to change app icon path.
