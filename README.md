@@ -12,7 +12,7 @@ An extension to [PWA](https://wordpress.org/plugins/pwa/) to enable/activate `ad
 
 **Tags:** [pwa](https://wordpress.org/plugins/tags/pwa)
 **Requires at least:** 4.9
-**Tested up to:** 5.1
+**Tested up to:** 5.7.1
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)
 **Requires PHP:** 5.4+
 

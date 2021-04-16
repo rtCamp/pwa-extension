@@ -109,17 +109,17 @@ class Test_Admin_Settings extends \WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_register_plugin_settings() {
-		global $new_whitelist_options, $wp_settings_fields;
+		global $new_allowed_options, $wp_settings_fields;
 
 		$this->_instance->register_plugin_settings();
 
 		$this->assertarrayHasKey(
 			'pwa_extension',
-			$new_whitelist_options,
+			$new_allowed_options,
 			'Option Group pwa_extension has not been created'
 		);
 
-		$settings = $new_whitelist_options['pwa_extension'];
+		$settings = $new_allowed_options['pwa_extension'];
 
 		$this->assertCount( 1, $settings, 'The Settings Group amp-admanager-menu 1 setting' );
 
