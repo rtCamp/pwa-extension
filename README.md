@@ -1,3 +1,5 @@
+_The latest [PWA plugin 0.6.0](https://wordpress.org/plugins/pwa/) now has offline caching for theme assets, uploaded images, navigations and manifest for app icon as well, so this extension is no longer needed._
+
 <p align="center">
 <a href="https://rtcamp.com/" target="_blank"><img width="200"src="https://rtcamp.com/wp-content/themes/rtcamp-v9/assets/img/site-logo-black.svg"></a>
 </p>
